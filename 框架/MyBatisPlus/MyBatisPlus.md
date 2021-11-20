@@ -763,13 +763,5 @@ public class Code {
 
 <img src="MyBatisPlus.assets/20201122104625171-1622708893856.png" alt="在这里插入图片描述" style="zoom: 67%;" /> 
 
-git clone
 
-git add .
-
-git status
-
-git commit -m “”
-
-git push origin mastera
 
