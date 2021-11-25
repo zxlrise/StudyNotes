@@ -462,10 +462,286 @@ public:
 
 **思路**
 
+**(BFS)** $O(nm)$
+这是一个典型的宽度优先搜索问题，我们从 `(0, 0)`点开始，每次朝上下左右四个方向扩展新的节点即可。
+
+扩展时需要注意新的节点需要满足如下条件：
+
+- 之前没有遍历过，这个可以用个`bool`数组来判断；
+- 没有走出边界；
+- 横纵坐标的各位数字之和小于 等于$k$；
+
+最后答案就是所有遍历过的合法的节点个数。
+
+**时间复杂度**
+
+每个节点最多只会入队一次，所以时间复杂度不会超过方格中的节点个数。最坏情况下会遍历方格中的所有点，所以时间复杂度就是 $O(nm)$。
+
+**细节：** 
+
+如果把整个棋盘当做一个状态，那就需要回溯；如果把棋盘中的每个点当做状态，就不需要回溯。
+
 **c++代码**
 
 ```c++
- 
+ class Solution {
+public:
+    int get_sum(pair<int, int> t){ //求出行坐标和列坐标的数位之和
+        int sum = 0;
+        while(t.first){
+            sum += t.first % 10;
+            t.first /= 10;
+        }
+        while(t.second){
+            sum += t.second % 10;
+            t.second /= 10;
+        }
+        return sum;
+    }
+    int movingCount(int m, int n, int k) {
+        if(!m || !n) return 0;
+        queue<pair<int,int>> q;
+        int dx[4] = {-1, 0, 1, 0}, dy[4] = {0, 1, 0, -1};
+        vector<vector<bool>> st(m, vector<bool>(n, false)); //标记数组
+        q.push({0, 0});
+        int cnt = 0;
+        while(q.size()){
+            auto t = q.front();
+            q.pop();
+            if(st[t.first][t.second] || get_sum(t) > k) continue; //判断当前点是否可走
+            cnt++;
+            st[t.first][t.second] = true; // 标记为走过
+            for(int i = 0; i < 4; i++){
+                int a = t.first + dx[i], b = t.second + dy[i];
+                if(a >= 0 && a < m && b >=0 && b < n)
+                    q.push({a, b});
+            }
+        }
+        return cnt;
+    }
+};
+```
+
+### [剑指 Offer 14- I. 剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/)
+
+**思路**
+
+**(数学)** $O(n)$
+这道题目是数学中一个很经典的问题，下面我们给出证明：
+
+首先把一个正整数 $N$ 拆分成若干正整数只有有限种拆法，所以存在最大乘积。
+假设 $N=n1+n2+…+nk$，并且 $n1×n2×…×nk$是最大乘积。
+
+1. 显然1不会出现在其中；
+2. 如果对于某个 $i$有$ ni≥5$，那么把 $ni $拆分成 $3+(ni−3)$，我们有 $3(ni−3)=3ni−9>ni$；
+3. 如果 $ni=4$，拆成 $2+2$乘积不变，所以不妨假设没有4；
+4. 如果有三个以上的2，那么 $3×3>2×2×2$，所以替换成3乘积更大；
+
+综上，选用尽量多的$3$，直到剩下$2$或者$4$时，用$2$。
+
+**时间复杂度分析**：
+
+当 $n$比较大时，$n$ 会被拆分成 $⌈n/3⌉$ 个数，我们需要计算这么多次减法和乘法，所以时间复杂度是$O(n)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int cuttingRope(int n) {
+        if(n <= 3) return 1 * (n - 1); //拆成两段
+        int res = 1;
+        if(n % 3 == 1) res = 4, n -= 4;       //选用尽量多的3，余下一个4，剪成2*2
+        else if(n % 3 == 2) res = 2 , n -= 2; //选用尽量多的3，余下一个2, 直接乘2
+        while(n) res *= 3, n -= 3;
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 14- II. 剪绳子 II](https://leetcode-cn.com/problems/jian-sheng-zi-ii-lcof/)
+
+**思路**
+
+**同剪绳子I** 
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int cuttingRope(int n) {
+        if(n <= 3) return n - 1;
+        long long res = 1;
+        if(n % 3 == 1) res = 4, n -= 4;
+        else if(n % 3 == 2) res = 2, n -= 2;
+        while(n){
+            res = (res * 3)% 1000000007;
+            n -= 3;
+        }
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 15. 二进制中1的个数](https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)
+
+**思路**
+**(位运算)** 
+
+$ lowbit(x) $**函数的作用**
+
+$lowbit(x)$**操作返回 $x$ 的最后一位 $1$**
+
+-  $x=1010_2$，那么 $lowbit(x)$ 返回 $10_2$，即$ lowbit(x)=10$
+-  $x=101000_2$，那么 $lowbit(x) $返回$ 1000_2$，即$ lowbit(x)=1000$
+
+**$lowbit$ 的应用：可以统计 $x$ 中 $1$ 的个数**
+
+就是每一次把 $x$ 的最后一位 $1$ 减掉，即 $x−lowbit(x)$，只需要算下减多少次，减多少次就有多少个$ 1$ 。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        int res = 0;
+        while(n){
+            n -= n & -n;
+            res++;
+        }
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 16. 数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
+
+**思路**
+
+**(模拟，快速幂) **$O(logn)$
+
+**快速幂模板:**
+
+```c++
+LL quickPow(LL a,LL b , int  mod )
+{
+    LL res= 1;
+    while(b)
+    {
+        if(b&1) res = res * a %mod;
+        b >>= 1;
+        a = a*a %mod;
+    }
+    return res;
+}
+```
+
+由于本题的指数是`int`范围，可能很大，所以需要用快速幂求解。
+
+注意当指数是负数时，我们需要先取指数的绝对值，最后将乘积的倒数作为答案。
+
+**时间复杂度**
+假设指数是 $n$，则一共会循环 $O(logn)$ 次，所以时间复杂度是 $O(logn)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    double myPow(double x, int n) {
+        typedef long long LL;
+        bool is_minus = false;
+        if(n < 0) is_minus = true;  //判断指数是否是负数
+        LL k = abs(LL(n));  //取绝对值
+        double res = 1;
+        while(k){
+            if(k & 1) res *= x; // k是奇数
+            k >>= 1; //指数减半
+            x *= x;  //底数加倍
+        }
+        if(is_minus) res = 1 / res;
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 17. 打印从1到最大的n位数](https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/)
+
+**思路**
+
+**(模拟)**  $O(n)$
+
+1、求出最大的`n`位十进制数。
+
+2、枚举`[1, n]`，将其加入`res`中。
+
+**时间复杂度分析：** $O(n)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    vector<int> printNumbers(int n) {
+        int num = 0; //记录最大的n位十进制数
+        while(n) num = num * 10 + 9, n--;
+        vector<int> res;
+        for(int i = 1; i <= num; i++){
+            res.push_back(i);
+        }
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 18. 删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)*
+
+**思路**
+
+**(链表， 遍历)**  $O(n)$
+
+为了方便处理边界情况，我们定义一个虚拟元素`dummy`指向链表头节点，即`dummy->next = head`，同时定义一个`pre`节点，记录当前遍历到的节点的前驱节点。
+
+**具体过程如下：**
+
+1、初始化虚拟头节点`dummy->next = head`，前驱节点`pre = dummy`。
+
+2、遍历整个链表，如果当前节点`p`的`val`值等于`val`，我们就让`pre->next = p->next`，结束遍历。
+
+3、最后返回虚拟头节点的下一个节点。
+
+<img src="剑指offer.assets/image-20211124170120943.png" alt="image-20211124170120943" style="zoom:50%;" />
+
+**时间复杂度分析：** $O(n)$
+
+**c++代码**
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteNode(ListNode* head, int val) {
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* pre = head;
+        for(ListNode* p = dummy; p; pre = p, p = p->next){
+            if(p->val == val){
+                pre->next = p->next;
+                break;
+            }
+        }
+        return dummy->next;
+    }
+};
 ```
 
 ### [剑指 Offer 19. 正则表达式匹配](https://leetcode-cn.com/problems/zheng-ze-biao-da-shi-pi-pei-lcof/)
@@ -530,7 +806,109 @@ public:
 };
 ```
 
+### [剑指 Offer 20. 表示数值的字符串](https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/)
 
+**思路**
+**(模拟，字符串处理)**   $O(n)$
+
+遍历整个字符串，将所有的不合法情况都去除掉，剩下的就是合法情况。
+
+**具体过程如下：**
+
+1、首先去除行首和行尾空格，如果去除完之后，整个字符串为空，则返回`false`。
+
+2、行首如果有一个正负号，直接忽略。
+
+3、如果字符串为空或只有一个`'.'`，则不是一个合法方案。
+4、遍历整个字符串`s`，对于当前字符`s[i]`：
+
+- `s[i]`为数字，则不做任何处理。
+- `s[i] == '.'`，`.`的个数加`1`。如果此时`'.'`在`'e'`后面出现或者` '.'`的个数多于`1`个，则返回`false`。【`1e2.1`，`1e2.1.1`】
+- `s[i] == 'e' || s[i] == 'E'`，`e`的个数加`1`。
+  - 如果此时`'e'`的后面为空或者`'e'`多于`1`个或者`'e'`的前面为空或者为`'.''e'`，则返回`false`。【`12e`，`12e3e`，`e12`，`12.e3`】
+  - `'e'`后面紧跟着正负号，但正负号后面为空，则返回`false`。【`1e2+`】
+- `s[i]`为其他字符，返回`false`。
+
+5、排除了各种非法情况，此时`s`则为合法方案，我们返回`true`。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    bool isNumber(string s) {
+        int i = 0;
+        while (i < s.size() && s[i] == ' ') i ++ ; //删除行首空格
+        int j = s.size() - 1;
+        while (j >= 0 && s[j] == ' ') j -- ; //删除行末空格
+        if (i > j) return false;
+        s = s.substr(i, j - i + 1);
+
+        if (s[0] == '-' || s[0] == '+') s = s.substr(1); //忽略行首正负号
+        if (s.empty() || s[0] == '.'&& s.size() == 1) return false;//如果字符串为空或只有一个'.',则不是一个合法方案
+
+        int dot = 0, e = 0;
+        for (int i = 0; i < s.size(); i ++ )
+        {
+            if (s[i] >= '0' && s[i] <= '9');//遇到数字不做任何处理
+            else if (s[i] == '.')
+            {
+                dot ++ ; //'.'的个数加1
+                if (e || dot > 1) return false;//'.'在'e'后面出现 , '.'的个数多于1个；
+            }
+            else if (s[i] == 'e' || s[i] == 'E')
+            {
+                e ++ ; //'e'的个数加1  
+                //'e'的后面为空或者'e'多于1个或者'e'的前面为空或者为'.''e'
+                if (i + 1 == s.size() || !i || e > 1 || i == 1 && s[0] == '.') return false;
+                if (s[i + 1] == '+' || s[i + 1] == '-')//'e'后面紧跟着正负号，但正负号后面为空
+                {
+                    if (i + 2 == s.size()) return false;
+                    i ++ ;
+                }
+            }
+            else return false; //其他字符
+        }
+        return true;
+    }
+
+};
+```
+
+### [剑指 Offer 21. 调整数组顺序使奇数位于偶数前面](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
+
+**思路**
+
+**(双指针扫描)**    $O(n)$
+
+用两个指针分别从首尾开始，往中间扫描。扫描时保证第一个指针前面的数都是奇数，第二个指针后面的数都是偶数。
+
+每次迭代时需要进行的操作：
+
+1. 第一个指针一直往后走，直到遇到第一个偶数为止；
+2. 第二个指针一直往前走，直到遇到第一个奇数为止；
+3. 交换两个指针指向的位置上的数，再进入下一层迭代，直到两个指针相遇为止；
+
+<img src="剑指offer.assets/image-20211124190746173.png" alt="image-20211124190746173" style="zoom:50%;" />
+
+**时间复杂度分析：**当两个指针相遇时，走过的总路程长度是 $n$，所以时间复杂度是 $O(n)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    vector<int> exchange(vector<int>& nums) {
+        int i = 0, j = nums.size() - 1;
+        while(i < j){
+            while(i < j && nums[i] % 2 == 1) i++;
+            while(i < j && nums[j] % 2 == 0) j--;
+            swap(nums[i], nums[j]);
+        }
+        return nums;
+    }
+};
+```
 
 ### [剑指 Offer 41. 数据流中的中位数](https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof/)
 
