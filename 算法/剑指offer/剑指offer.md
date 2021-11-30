@@ -573,7 +573,7 @@ public:
     int cuttingRope(int n) {
         if(n <= 3) return n - 1;
         long long res = 1;
-        if(n % 3 == 1) res = 4, n -= 4;
+        if(n % 3 == 1)      res = 4, n -= 4;
         else if(n % 3 == 2) res = 2, n -= 2;
         while(n){
             res = (res * 3)% 1000000007;
@@ -642,8 +642,7 @@ LL quickPow(LL a,LL b , int  mod )
 
 注意当指数是负数时，我们需要先取指数的绝对值，最后将乘积的倒数作为答案。
 
-**时间复杂度**
-假设指数是 $n$，则一共会循环 $O(logn)$ 次，所以时间复杂度是 $O(logn)$。
+**时间复杂度分析：** 假设指数是 $n$，则一共会循环 $O(logn)$ 次，所以时间复杂度是 $O(logn)$。
 
 **c++代码**
 
@@ -910,6 +909,1023 @@ public:
 };
 ```
 
+### [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
+
+**思路**
+
+**(链表)**$O(n)$
+
+由于单链表不能索引到前驱节点，所以只能从前往后遍历。
+
+我们一共遍历两次：
+
+1. 第一次遍历得到链表总长度 $n$；
+
+2. 链表的倒数第 $k$ 个节点，相当于正数第$n−k+1$ 个节点。所以第二次遍历到第$ n−k+1$ 个节点，就是我们要找的答案。
+
+   <img src="剑指offer.assets/image-20211125160920255.png" alt="image-20211125160920255" style="zoom:50%;" />
+
+**注意:** 
+
+当 $k>n$ 时要返回$nullptr$。
+
+**时间复杂度分析：**  链表总共遍历两次，所以时间复杂度是 $O(n)$。
+
+**c++代码**
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* getKthFromEnd(ListNode* head, int k) {
+       int n = 0;
+       for(auto p = head; p ; p = p->next) n++;
+       if(k > n) return NULL;
+       auto p = head;
+       for(int i = 0; i < n - k; i++) p = p->next;
+       return p;
+    }
+};
+```
+
+### [剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)
+
+**思路**
+
+**(双指针，迭代)** $(n)$
+
+反转链表即将所有节点的`next`指针指向他的前驱节点。由于是单链表，我们在迭代时不能直接找到前驱节点，所以我们需要一个额外的指针保存前驱节点。同时在改变当前节点的`next`指针前，不要忘记保存它的后继节点。
+
+**具体过程如下：**
+
+- 1、定义一个前驱指针`pre`和`cur`指针，`pre`指针用来指向前驱节点，`cur`指针用来遍历整个链表，初始化`cur = head`，`pre = null`。  
+
+- 2、首先让`t`指针指向`cur`指向节点的后继节点，然后让`cur`指向节点的`next`指针指向其前驱节点，即`cur->next = pre`。
+- 3、`pre`指针和`cur`指针分别后移一位，重复上述过程，直到`cur`指向空节点。  
+
+- 4、最后我们返回`pre`节点。  
+
+<img src="剑指offer.assets/image-20211125165337516.png" alt="image-20211125165337516" style="zoom:50%;" />
+
+**时间复杂度分析：**只遍历一次链表，时间复杂度是$O(n)$。 
+
+**c++代码**
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution 
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *pre = NULL;
+        ListNode *cur = head;
+        while(cur)
+        {
+            ListNode *t = cur->next; //保留后继节点
+            cur->next = pre; //当前节点指向前驱节点
+            pre = cur, cur = t;
+        }
+        return pre;
+    }
+};
+```
+
+### [剑指 Offer 25. 合并两个排序的链表](https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/) *
+
+**思路**
+
+**(二路归并)** $O(n)$
+
+1、新建头部的虚拟头节点`dummy`，设置`cur`指针指向`dummy`。
+
+2、若当前`l1`指针指向的节点的值`val`比`l2`指针指向的节点的值`val`小，则令`cur`的`next`指针指向`l1`，且`l1`后移一位；否则指向`l2`，且`l2`后移一位。
+
+3、然后`cur`指针按照上一步设置好的位置后移。
+
+4、循环以上步骤直到`l1`或`l2`为空。
+
+5、将剩余的`l1`或`l2`接到`cur`指针后边。
+
+**时间复杂度分析：** 两个链表各遍历一次，所以时间复杂度为$O(n)$
+
+**c++代码**
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode(-1);
+        ListNode* cur = dummy;
+        while(l1 != NULL && l2 != NULL){
+            if(l1->val < l2->val){
+                cur->next = l1;
+                l1 = l1->next;
+            }else{
+                cur->next = l2;
+                l2 = l2->next;
+            }
+            cur = cur->next;
+        }
+        cur->next = (l1 != NULL ? l1 : l2); //将剩余的l1或l2接到cur指针后边
+        return dummy->next;
+    }
+};
+```
+
+### [剑指 Offer 26. 树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/) *
+
+**(二叉树，递归)**   $O(nm)$
+
+我们首先判断两棵二叉树是否为空，如果为空，则直接返回`false`。遍历树`A`中的所有非空节点`root`，判断树`A`中以`root`为根节点的子树是不是包含和树`B`一样的结构，且我们从根节点开始匹配，当从`A`的根节点开始不匹配的话，我们递归到`A`的左右子树去匹配。
+
+`isSame`函数用来判断判断`B`是否为`A`的子树，具体设计思路如下：
+
+- 如果树`B`中的节点为空，则表示当前分支是匹配的，返回`true`；
+- 如果树`A`中的节点为空，但树B中的节点不为空，则说明不匹配，返回`false`；
+- 如果两个节点都不为空，但数值不同，则说明不匹配，返回`false`；
+- 否则说明当前这个点是匹配的，然后递归判断左子树和右子树是否分别匹配即可；
+
+**时间复杂度分析：** 最坏情况下，我们对于树`A`中的每个节点都要递归判断一遍，每次判断在最坏情况下需要遍历完树`B`中的所有节点。
+所以时间复杂度是 $O(nm)$，其中 $n $树A中的节点数， $m$ 是树B中的节点数。
+
+**c++代码 **
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSubStructure(TreeNode* A, TreeNode* B) {
+        if(!A || !B) return false; //如果A树或者B树一个为空，则不匹配
+        if(isSame(A, B)) return true;  // 从根节点开始判断，找到第一个匹配的位置
+        // 如果根节点不匹配的话，我们递归到左右子树去判断
+        return isSubStructure(A->left, B) || isSubStructure(A->right, B);
+    }
+
+    bool isSame(TreeNode* A, TreeNode* B){
+        if(!B) return true; //B树为空，匹配成功
+        // B树不为空，若A树为空，或者A,B都不为空，但是值不相等,匹配不成功
+        if(!A || A->val != B->val) return false;
+        //否则说明当前这个点是匹配的，然后递归判断左子树和右子树是否分别匹配即可
+        return isSame(A->left, B->left) && isSame(A->right, B->right);
+    }
+};
+
+```
+
+### [剑指 Offer 27. 二叉树的镜像](https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/)*
+
+**思路**
+
+**(二叉树，递归)**   $O(n)$
+
+观察样例，我们可以发现镜像后的树就是将原树的所有节点的左右儿子互换，因此递归遍历原树的所有节点，将每个节点的左右儿子互换即可。
+
+**时间复杂度分析：** 原树中的每一个节点仅会被遍历一次，所以时间复杂度是 $O(n)$，$n$为树中的节点个数。
+
+**c++代码**
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* mirrorTree(TreeNode* root) {
+        if(!root) return NULL;  //如果节点为空，则返回NULL
+        swap(root->left, root->right); //互换左右节点儿子
+        mirrorTree(root->left); //递归左子树
+        mirrorTree(root->right); //递归右子树
+        return root;
+    }
+};
+```
+
+### [剑指 Offer 28. 对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)
+
+**思路**
+
+**(二叉树，递归)**  $O(n)$ 
+
+**两个子树互为镜像当且仅当：** 
+
+1. 两个子树的根节点值相等。
+ 2.  第一棵子树的左子树和第二棵子树的右子树互为镜像，且第一棵子树的右子树和第二棵子树的左子树互为镜像。
+
+**递归边界：** 
+
+1. 两个子树的当前节点都为空，判断成功，返回`true`。
+2. 只有一个为空，判断失败，返回`false`。
+3. 都不为空，但是值不相等，同样判断失败，返回`false`。
+4. 递归左右子树继续判断
+
+**时间复杂度分析：** 从上到下每个节点仅被遍历一遍，所以时间复杂度是 O(n)。
+
+**c++代码** 
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(!root) return true;  //空树一定是对称的 
+        return dfs(root->left, root->right);  //从左右子树开始判断
+    }
+    bool dfs(TreeNode* p, TreeNode* q){
+        if(!p && !q) return true;
+        if(!p || !q) return false;
+        if(p->val != q->val) return false;
+        return dfs(p->left, q->right) && dfs(p->right, q->left);
+    }
+};
+```
+
+### [剑指 Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+
+**思路**
+
+**(模拟)**   $O(nm) $
+
+我们顺时针定义四个方向：上右下左。
+
+从左上角开始遍历，先往右走，走到不能走为止，然后更改到下个方向，再走到不能走为止，依次类推，遍历 `n*m` 个格子后停止。
+
+<img src="剑指offer.assets/20210409112830795.png" alt="在这里插入图片描述" style="zoom:50%;" />
+
+**时间复杂度分析：** 矩阵中每个格子遍历一次，所以总时间复杂度是 $O(nm)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int dx[4] = {-1, 0, 1, 0}, dy[4] = {0, 1, 0, -1};
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
+        if(matrix.empty()) return res; 
+        int n = matrix.size(), m = matrix[0].size();
+        vector<vector<bool>> st(n, vector<bool>(m)); //标记数组
+        int x = 0, y = 0, d = 1;  //当前所在位置
+        for(int i = 1; i <= n * m; i++){
+            res.push_back(matrix[x][y]);
+            st[x][y] = true; //将当前位置标记为走过
+            int a = x + dx[d], b = y + dy[d]; //下一个位置
+            if(a < 0 || a >= n || b < 0 || b >= m || st[a][b]){
+                d = (d + 1) % 4;
+                a = x + dx[d], b = y + dy[d];
+            }
+            x = a, y = b;
+        }
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 30. 包含min函数的栈](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/)
+
+**思路**
+
+**(单调栈)**  $O(1)$
+
+我们除了维护基本的栈`stackValue`结构之外，还需要维护一个单调递减栈`stackMin`，来实现返回最小值的操作。 
+
+![38262_3c970524a3-单调递减栈的规律](剑指offer.assets/38262_3c970524a3-单调递减栈的规律.jpg)
+
+**`push`操作**
+
+- 1、直接向普通栈`stackValue`压入。
+- 2、如果该数 `≤` 单调栈`stackMin`的栈顶元素，则将该数同时压入单调栈中；否则，不压入。
+
+**`pop()`操作**
+
+- 1、如果普通栈顶元素 `==` 单调栈`stackMin`的栈顶元素，则弹出单调栈顶元素；否则，不弹出。
+- 2、直接弹出普通栈顶元素
+
+**时间复杂度分析：**  四种操作都只有常数次入栈出栈操作，所以时间复杂度都是 $O(1)$。
+
+**c++代码**
+
+```c++
+class MinStack {
+public:
+    stack<int> stackValue;
+    stack<int> stackMin;
+    MinStack() {
+    }
+ 
+    void push(int x) {
+        stackValue.push(x);
+        if(stackMin.empty() || stackMin.top() >= x) stackMin.push(x);
+    }
+    
+    void pop() {
+        if(stackValue.top() == stackMin.top()) stackMin.pop();
+        stackValue.pop();
+    }
+    
+    int top() {
+        return stackValue.top();
+    }
+    
+    int min() {
+        return stackMin.top();
+    }
+};
+```
+
+### [剑指 Offer 31. 栈的压入、弹出序列](https://leetcode-cn.com/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/)*
+
+**思路**
+
+**(栈，模拟)** 
+
+1、我们定义一个空栈`st`，然后模拟这个过程。
+
+2、遍历`popped`数组，假设我们已经处理了出栈序列中的前`i - 1`个数，对于当前要出栈的元素`popped[i]`：
+
+- 如果栈首元素和`popped[i]`不相等，我们就从`pushed`数组中，不断将数组元素压入`st`栈中，直到`popped[i]`入栈。
+- 如果栈首元素和`popped[i]`相等，则将栈首出栈，否则的话，该序列不合法，我们返回`false`。
+
+3、最后判断`st`是否为空，为空则表示弹出序列合法，否则不合法。      
+
+**时间复杂度分析：**  遍历整个出栈序列的时间复杂度为$O(n)$，`while`循环最多执行`n`次，因此总的时间复杂度为$O(n)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        stack<int> st;
+        int k = 0;
+        for(int i = 0; i < popped.size(); i++){
+            while(st.empty() || (st.top() != popped[i] && k != pushed.size())) st.push(pushed[k++]);
+            if(st.top() == popped[i]) st.pop();
+            else return false; 
+        }
+        return st.empty();
+    }
+};
+```
+
+### [剑指 Offer 32 - I. 从上到下打印二叉树](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-lcof/)
+
+**思路**
+
+**(BFS)**   $O(n)$
+
+我们从根节点开始按宽度优先的顺序遍历整棵树，每次先扩展左儿子，再扩展右儿子。
+
+这样我们会：
+
+1. 先扩展根节点；
+2. 再依次扩展根节点的左右儿子，也就是从左到右扩展第二层节点；
+3. 再依次从左到右扩展第三层节点；
+4. 依次类推
+
+所以BFS的顺序就是这道题目要求的顺序。
+
+**时间复杂度分析：** 每个节点仅被遍历一次，所以时间复杂度是 $O(n)$。
+
+**c++代码**
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    // 广度优先遍历
+    vector<int> levelOrder(TreeNode* root) {
+        vector<int> res;
+        if(!root) return res;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(q.size()){
+            TreeNode * t = q.front();
+            q.pop();
+            res.push_back(t->val);
+            if(t->left) q.push(t->left);
+            if(t->right)q.push(t->right); 
+        }
+        return res;
+    }
+};
+
+```
+
+### [剑指 Offer 32 - II. 从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
+
+**思路**
+
+和上一题的代码一样，区别在于，每一层结束的时候，往`queue`里塞一个`NULL`做每一层的结尾标记。当我们访问到一层的结尾时，由于`BFS`的特点，我们刚好把下一层都加到了队列中。这个时候就可以给这层加上结尾标记`NULL`了。	
+
+**c++代码**
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res; //记录答案
+        if(!root) return res;
+        vector<int> level; //记录一层节点
+        queue<TreeNode*> q;
+        q.push(root);
+        q.push(NULL); //第一层结尾标记
+        while(q.size()){
+            auto t = q.front();
+            q.pop();
+            if(!t){  //遍历到当前层的结尾
+                if(level.empty()) break;
+                res.push_back(level);
+                q.push(NULL); //给下一层添加结尾标记
+                level.clear();
+            }else{
+                level.push_back(t->val); //先将当层节点存贮到level,再将下一层存贮到队列中
+                if(t->left)   q.push(t->left);
+                if(t->right)  q.push(t->right);
+            }
+        }
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 32 - III. 从上到下打印二叉树 III](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof/)
+
+**思路**
+
+和上一题的思路类似，我们再加上一个`flag`标记，初始化`flag = false`，表示奇数行，如果是偶数行，`flag = true`，每次打印完一行后，将`flag`取反。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    // 宽度优先遍历
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res; //记录答案
+        queue<TreeNode*> q; //队列
+        vector<int> level;  //存贮一层的节点
+        bool flag = false;  //标记
+        q.push(root);       //根节点入队
+        q.push(NULL);       //一层的结尾标记
+        while(q.size()){
+            TreeNode* t = q.front();
+            q.pop();
+            if(!t){          //一层结束
+                if(!level.size())  break; // 最后一层结束
+                if(flag) reverse(level.begin(), level.end());
+                res.push_back(level);
+                flag = !flag;
+                level.clear();
+                q.push(NULL); //结尾标记入队
+            }else{
+                level.push_back(t->val);        // 存贮当层节点
+                if(t->left)  q.push(t->left);   //下一层节点入队列
+                if(t->right) q.push(t->right);
+            }
+        }
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 33. 二叉搜索树的后序遍历序列](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/)
+
+**思路**
+
+**递归** $O(n^2)$
+
+**什么是二叉搜索树 ？**
+
+二叉搜索树是一棵有序的二叉树，所以我们也可以称它为二叉排序树。具有以下性质的二叉树我们称之为二叉搜索树：若它的左子树不为空，那么左子树上的所有值均小于它的根节点；若它的右子树不为空，那么右子树上所有值均大于它的根节点。它的左子树和右子树分别也为二叉搜索树。
+
+二叉搜索树的后序遍历是**左右根**，先遍历左子树，然后右子树，最后根节点。 
+
+<img src="剑指offer.assets/image-20211129113013787.png" alt="image-20211129113013787" style="zoom:50%;" />
+
+**判断是否是二叉搜索树的后序遍历序列:**
+
+1. 递归当前序列的左右边界。
+2. 根节点是当前序列的最后一个元素。
+3. 遍历出左子树的终点在什么地方，这样我们就可以知道右子树的起始位置，然后我们遍历右子树的所有节点，看一下是否右子树的所有节点是否都比根节点要大，满足合法，否则不合法。
+4. 递归左右子树，只有左右子树同时合法，我们这棵树才是合法的。
+
+**如何遍历左子树的终点？**
+
+左子树的元素都小于根节点，这样我们从头遍历`seq`序列，通过该性质找到左右子树的分界点`k`，那么左子树序列为`[l, k - 1]`，右子树序列为`[k, r - 1]`。
+
+**时间复杂度分析：** `dfs`中有个`while`循环，最坏情况下会循环 $O(n) $次，一共会执行$O(n) $次`dfs`，所以时间复杂度是 $O(n^2)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    bool verifyPostorder(vector<int>& post) {
+        if(post.empty()) return true;
+        return dfs(post, 0 ,post.size() - 1);
+    }
+
+    bool dfs(vector<int>& post, int l, int r){
+        if(l >= r) return true;  //递归边界，只剩下一个数肯定满足
+        int root = post[r]; //记录根节点
+        int k = l;
+        while(k < r && post[k] < root) k++; //先遍历出左子树的终点 k - 1
+        for(int i = k; i <= r; i++){
+            if(post[i] < root)  return false;
+        }
+        return dfs(post, l, k - 1) && dfs(post, k, r - 1);
+    }
+};
+```
+
+### [剑指 Offer 34. 二叉树中和为某一值的路径](https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)
+
+**思路**
+
+**(前序遍历，递归)**   
+
+递归，自顶向下从根节点往叶节点走，每走过一个节点，就让 `sum` 减去该节点的值，则如果走到某个叶节点时，`sum` 恰好为`0`，则说明从根节点到这个叶节点的路径上的数的和等于 `sum`，此时需要把这条路径记录下来。
+
+**时间复杂度分析：**$O(n^2)$ 其中 $n$是树的节点数。在最坏情况下，树的上半部分为链状，下半部分为完全二叉树，并且从根节点到每一个叶子节点的路径都符合题目要求。此时，路径的数目为 $O(n)$，并且每一条路径的节点个数也为 $O(n)$，因此要将这些路径全部添加进答案中，时间复杂度为 $O(n^2)$ 
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> res; // 记录答案
+    vector<int> path; //记录路径
+    vector<vector<int>> pathSum(TreeNode* root, int target) {
+        dfs(root, target);
+        return res;
+    }
+    void dfs(TreeNode* root, int target){
+        if(!root) return ;
+        target -= root->val;
+        path.push_back(root->val);
+        if(!root->left && !root->right && !target) res.push_back(path);
+        dfs(root->left, target);
+        dfs(root->right, target);
+        target += root->val;
+        path.pop_back();
+    }
+};
+```
+
+### [剑指 Offer 35. 复杂链表的复制](https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/)
+
+**思路**
+
+**(迭代)**  $O(n)$
+
+题目要求我们复制一个长度为` n` 的链表，该链表除了每个节点有一个指针指向下一个节点外，还有一个额外的指针指向链表中的任意节点或者`null`，如下图所示： 
+
+<img src="剑指offer.assets/image-20210821215533755.png" alt="image-20210821215533755" style="zoom:50%;" />
+
+**如何去复制一个带随机指针的链表？** 
+
+首先我们可以忽略`random` 指针，然后对原链表的每个节点进行复制，并追加到原节点的后面，而后复制`random`指针。最后我们把原链表和复制链表拆分出来，并将原链表复原。
+
+**图示过程如下：** 
+
+1、在每个节点的后面加上它的复制，并将原链表和复制链表连在一起。
+
+<img src="剑指offer.assets/image-20210821221810588.png" alt="image-20210821221810588" style="zoom:50%;" />
+
+2、 从前往后遍历每一个原链表节点，对于有`random`指针的节点`p`，我们让它的`p->next->random = p->random->next`，这样我们就完成了对原链表`random`指针的复刻。  
+
+<img src="剑指offer.assets/image-20210821222539549.png" alt="image-20210821222539549" style="zoom:50%;" />
+
+3、最后我们把原链表和复制链表拆分出来，并将原链表复原。 
+
+<img src="剑指offer.assets/image-20210821223250966.png" alt="image-20210821223250966" style="zoom:50%;" />
+
+**具体过程如下：** 
+
+- 1、定义一个`p`指针，遍历整个链表，复制每个节点，并将原链表和复制链表连在一起。
+- 2、再次遍历整个链表，执行`p->next->random = p->random->next`，复制`random`指针。 
+- 3、定义虚拟头节点`dummy`用来指向复制链表的头节点， 将两个链表拆分并复原原链表。
+
+**时间复杂度分析：** $O(n)$，其中 $n$ 是链表的长度。 
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        //先复制链表节点，并将原链表和复制链表连接到一起
+        for(Node* p = head; p; p = p->next->next){
+            Node* q = new Node(p->val);
+            q->next = p->next;
+            p->next = q;
+        }
+
+        //复制random指针
+        for(Node* p = head; p; p = p->next->next){
+            if(p->random) p->next->random = p->random->next;
+        }
+
+        //将原链表和复制链表分离开,并将原链表复原
+        auto dummy = new Node(-1), cur = dummy;
+        for(Node* p = head; p; p = p->next){
+            Node* q = p->next;
+            cur = cur->next = q;
+            p->next = p->next->next;
+        }
+        
+        return dummy->next;
+    }
+};
+```
+
+### [剑指 Offer 36. 二叉搜索树与双向链表](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/)
+
+**思路**
+
+**(递归）** $O(n)$ 
+
+**什么是二叉搜索树 ？**
+
+二叉搜索树是一棵有序的二叉树，所以我们也可以称它为二叉排序树。具有以下性质的二叉树我们称之为二叉搜索树：若它的左子树不为空，那么左子树上的所有值均小于它的根节点；若它的右子树不为空，那么右子树上所有值均大于它的根节点。它的左子树和右子树分别也为二叉搜索树。
+
+**二叉搜索树的中序遍历是：左=>根=>右； 二叉搜索树的中序遍历从小到大是有序的。**  
+
+**中序遍历模板** 
+
+```c++
+//打印中序遍历
+void dfs(TreeNode* root ) 
+{
+    if(!root) return;
+    dfs(root->left); 	//左
+    print(root->val);   //根
+   	dfs(root->right);	//右
+}
+```
+
+如图所示，本题要求我们要将一棵**二叉搜索树**变成**排序的循环双向链表。**
+
+<img src="剑指offer.assets/image-20210715110217386.png" alt="image-20210715110217386" style="zoom: 50%;" />
+
+二叉搜索树的中序遍历就是有序的，因此这道题就是在中序递归遍历的基础上改了一点。
+
+**具体过程如下：**
+
+1、我们定义两个指针`pre`和`head`，`pre`指针用于保存中序遍历的前一个节点，`head`指针用于记录排序链表的头节点。
+
+2、中序遍历二叉树，因为是中序遍历，所以遍历顺序就是双线链表的建立顺序。我们只需要在中序遍历的过程中，修改每个节点的左右指针，将零散的节点连接成双向循环链表。
+
+<img src="剑指offer.assets/image-20210715112414259.png" alt="image-20210715112414259" style="zoom:50%;" />
+
+3、首先遍历二叉树的左子树，然后是当前根节点`root`。
+
+- 当前驱节点`pre`不为空时，将前驱节点`pre`的右指针指向当前根节点`root`，即`pre->right = root`。
+
+  <img src="剑指offer.assets/image-20210715112013923.png" alt="image-20210715112013923" style="zoom:50%;" />
+
+- 当前驱节点`pre`为空时： 代表正在访问链表头节点，记为 `head = root ` ，保存头节点。
+
+4、每一个`root`节点访问时它的左子树肯定被访问过了，因此放心修改它的`left`指针，将`root`的`left`指针指向它的前驱节点，即` root->left = pre`， 这样两个节点之间的双向指针就修改好了。
+
+<img src="剑指offer.assets/image-20210715112840537.png" alt="image-20210715112840537" style="zoom:50%;" />
+
+5、然后前驱节点`pre`右移到当前`root`节点，接下来递归到右子树重复上述操作。
+
+<img src="剑指offer.assets/image-20210715113421440.png" alt="image-20210715113421440" style="zoom:50%;" />
+
+6、完成以上各步，只是将**二叉树**变成了**双向排序链表**，我们还需要将链表的首尾连接到一起，将其变成**双向循环排序链表**。
+
+执行以下操作：
+
+```c++
+head->left = pre;
+pre->right = head;
+```
+
+<img src="剑指offer.assets/image-20210715114040899.png" alt="image-20210715114040899" style="zoom:50%;" />
+
+**时间复杂度分析：** $n$为二叉树的节点数， 中序遍历需要访问所有节点，因此时间复杂度为$O(n)$。  
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    Node* pre = nullptr, *head = nullptr;
+    Node* treeToDoublyList(Node* root) {
+        if (!root) return root;
+        dfs(root);
+        head->left = pre;
+        pre->right = head;
+        return head;
+    }
+    void dfs(Node* root){
+        if (!root) return; // 递归边界: 叶子结点返回
+        dfs(root->left);
+        if (pre) pre->right = root;
+        else head = root; // 链表头结点
+        root->left = pre;
+        pre = root;
+        dfs(root->right);
+    }
+};
+```
+
+### [剑指 Offer 37. 序列化二叉树](https://leetcode-cn.com/problems/xu-lie-hua-er-cha-shu-lcof/)
+
+**思路**
+
+**(前序遍历)** 
+
+- 按照前序遍历顺序来序列化二叉树。
+
+**c++代码**
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) 
+    {
+        string res;
+        dfs_s(root, res);
+        return res;
+    }
+
+    void dfs_s(TreeNode* root, string &res)
+    {
+        if(!root) 
+        {
+            res += "null ";//如果当前节点为空，保存null和一个空格
+            return ;
+        }    
+        res += to_string(root->val) + ' ';//如果当前节点不为空，保存数字和一个空格
+        dfs_s(root->left, res);
+        dfs_s(root->right, res);
+    }
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) 
+    {
+        int u = 0;  //用来保存当前的字符串遍历的位置
+    return dfs_d(data, u);
+    }
+
+    TreeNode* dfs_d(string data, int &u)
+    {    //这里的u是传的引用，不是值传递
+        if (u == data.size()) return NULL;  //如果已经达到了字符串的尾端，则退出。
+        int k = u;
+        while(data[k] != ' ') k++; //k记录当前数字的位数如134是个三位数的数字，56是个两位数的数字，退出的时候，k指向了字符的中间的空格，所以回到下个字符的首部需要加1.
+
+         if(data[u] == 'n') 
+         {  //如果当前字符串是“null”
+            u = k+1;//回到下一个数字的首部，注意是u = k+1, 不是u = u+1;
+            return NULL;//表示这次构造的是一个null节点，并没有孩子节点，所以跳过后面的递归
+         }
+        int val = 0;
+        //如果数字是负的
+        if(data[u] == '-')
+        {
+            for (int i = u+1; i < k; i++) val = val * 10 + data[i] - '0';
+            val  = -val;
+        }
+        else
+        {
+            //如果是数字是正的
+            for (int i = u; i < k; i++) val = val * 10 + data[i] - '0';
+        }
+        u = k + 1;//回到下个数字的首部
+        //递归算法总是先写退出条件，然后才递归调用。
+        auto root = new TreeNode(val);
+        root->left = dfs_d(data, u);
+        root->right = dfs_d(data, u);
+        return root;
+    }
+
+};
+```
+
+### [剑指 Offer 38. 字符串的排列](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/)
+
+**思路**
+
+**(全排列 + 去重)**  $O(n * n!)$
+
+**数字全排列的模板**，对一个数组进行全排列，数组中不包含重复元素，比如 `nusm = {1, 2, 3}`时，我们输出：
+
+```c++
+1 2 3
+1 3 2
+2 1 3
+2 3 1
+3 1 2
+3 2 1
+```
+
+**c++代码模板** 
+
+```c++
+void dfs(int u)
+{
+    if(u == nums.size()) 
+    {
+        res.push_back(path);
+        return ;
+    }
+    for(int i = 0; i < nums.size(); i++)
+    {
+        if(!st[i])
+        {
+            path[i] = i;
+            st[i] = true;
+            dfs(u + 1);
+            st[i] = false;									;
+        }
+    }
+}
+```
+
+现在我们要对一个字符串进行全排列，但这个字符串中可能包含重复元素，比如`s = aab`，此时`a1a2b`和`a2a1b`就属于同一方案，而题目要求答案数组里面不能有重复元素，因此我们要考虑去重。
+
+**如何去重**
+
+1、先将所有字符从小到大排序，这样相同的字符会排在一起。
+
+2、对于相同的字符，我们人为去定义一种相对顺序，即优先使用出现顺序在前的字符，其次使用相对顺序在后的字符，比如`a1a2b`，我们按`a1`，`a2`去使用。因此，如果我们先使用了`a2`，再`a1`，就要按下列代码减去剪枝。
+
+```c++
+if(i && s[i] == s[i - 1] && !st[i - 1]) continue;
+```
+
+**时间复杂度分析：**  $O(n*n!)$
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    vector<string> res;
+    vector<bool> st;
+    vector<string> permutation(string s) {
+       sort(s.begin(), s.end()); // 排序一下
+       st = vector<bool>(s.size(), false);
+       dfs(s, 0, "");
+       return res; 
+    }
+    void dfs(string s, int u, string str){
+        if(u == s.size()){
+            res.push_back(str);
+        }
+        for(int i = 0; i < s.size(); i++){
+            if(!st[i]){
+                if(i && s[i] == s[i - 1] && !st[i - 1]) continue; //定义一个使用的相对顺序    
+                st[i] = true;
+                dfs(s, u + 1, str + s[i]);
+                st[i] = false;
+            }     
+        }
+    }
+};
+```
+
+### [剑指 Offer 39. 数组中出现次数超过一半的数字](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)
+
+**思路**
+
+**(投票算法)**  $O(n)$ 
+
+当一个国家的总统候选人`r`的支持率大于50%的话，即使每个反对他的人都给他投一个反对票，抵消掉他的支持票，他的支持票也不会被完全消耗掉。因此，我们可以假定和`r`相同的数都是支持票，和`r`不同的数都是反对票。
+
+维护两个变量：候选人和他的票数
+
+- 1、候选人初始化为`r = 0`，票数`c`初始化为`0`，遍历整个数组
+- 2、当候选人的票数为`0`时，更换候选人，并将票数重置为`1`
+- 3、当候选人的值和当前元素相同时，票数加`1`，否则减`1`
+- 4、最后维护的候选人即是答案
+
+**时间复杂度分析：**  $O(n)$ ，$n$是数组的大小。
+
+**空间复杂度分析：** 仅使用了两个变量，故需要 $O(1)$ 的额外空间。 
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int r = 0, c = 0;
+        for(int x : nums){
+            if(c == 0) r = x, c = 1;
+            else if(r == x) c++;
+            else c--;
+        }
+        return r;
+    }
+};
+```
+
+### [剑指 Offer 40. 最小的k个数](https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/)
+
+**思路**
+
+**(堆排序)**  $O(nlogk)$
+
+维护一个大小为`k`的大根堆，将数组元素都`push`进堆，当堆中的数大于`k`时弹出堆顶元素。注意弹出堆顶的顺序是从大到小的`k`个数，要进行逆序操作。
+
+**时间复杂度分析：** 建堆的时间复杂度是$O(logk)$，要进行`n`次建堆的操作。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        priority_queue<int> heap; //大根堆，根节点是最大的元素
+        for(int x : arr){
+            heap.push(x);
+            if(heap.size() > k)  heap.pop();
+        }
+        vector<int> res;
+        while(heap.size()){
+            res.push_back(heap.top());
+            heap.pop();
+        }a
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
+```
+
 ### [剑指 Offer 41. 数据流中的中位数](https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof/)
 
 **知识补充：**
@@ -987,19 +2003,21 @@ int main(){
 }
 ```
 
+大根堆就是根节点是整棵树的最大值，小根堆就是根节点是整棵树的最小值。
+
 **基本数据类型的优先级设置**
 
 一般情况下，数字大的优先级更高。（char类型的为字典序最大） 对于基本结构的优先级设置。下面两种优先队列的定义是等价的： 
 
 ```c++
-priority_queue<int> q; 
+priority_queue<int> q;   // 大根堆
 priority_queue<int,vector<int>,less<int> > q;
 ```
 
 如果想让优先队列总是把最小的元素放在队首，需进行以下定义：
 
 ```c++
-priority_queue<int, vector<int>, greater<int>> q
+priority_queue<int, vector<int>, greater<int>> q //小根堆
 ```
 
 **思路**
@@ -1053,126 +2071,153 @@ public:
 };
 ```
 
-### [剑指 Offer 56 - II. 数组中数、字出现的次数 II](https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/)
+### [剑指 Offer 42. 连续子数组的最大和](https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/)
 
 **思路**
 
-**(位运算)**   $O(n)$ 
+**(动态规划)**  $O(n)$
 
-如果一个数字出现`3`次，它的二进制每一位也出现的`3`次。如果把所有的出现`3`次的数字的二进制表示的每一位都分别加起来，那么每一位都能被`3`整除。 我们把数组中所有的数字的二进制表示的每一位都加起来。如果某一位能被3整除，那么这一位对只出现一次的那个数的这一肯定为`0`。如果某一位不能被`3`整除，那么只出现一次的那个数字的该位置一定为`1`。
+**状态表示:**  `f[i]`表示以`num[i]`结尾的连续子数组的和的最大值
 
-因此，考虑二进制每一位上出现 `0` 和 `1` 的次数，如果出现 `1` 的次数为 `3k + 1`，则证明答案中这一位是 `1`。
+**集合划分:**  将集合划分为只有`nums[i]`一个数，和以`nums[i]`为结尾的多个数组成的连续子数组两大类
 
-**具体过程：**
+**状态计算：** `f[i] = max(nums[i], f[i - 1] + nums[i] )`。
 
-- 1、定义`bit`，从`0`枚举到`31`，相当于考虑数字的每一位。
-- 2、遍历数组`nums`，统计所有数字`bit`位出现`1`的个数，记录到`cnt`中。
-- 3、如果`bit`位`1`出现次数不是`3`的倍数，则说明答案在第`i`位是`1`，否则说明答案的`bit`位是`0`。
+**初始化：** `f[0] = nums[0]`。
 
-**时间复杂度分析：** 仅遍历 `32` 次数组，故时间复杂度为 $O(n)$。 
+**图示**：
 
-**c++代码** 
+<img src="剑指offer.assets/image-20210529101218497-1638235300399.png" alt="image-20210529101218497" style="zoom: 50%;" />
 
-```c++
-class Solution {
-public:
-    int singleNumber(vector<int>& nums) {
-        int n = nums.size();
-        int res = 0;
-        for(int bit = 0; bit < 32; bit++){
-            int cnt = 0; //统计所有数字bit位上1的个数
-            for(int i = 0; i < nums.size(); i++){
-                if(nums[i] >> bit & 1) cnt++;
-            }
-            if(cnt % 3 != 0) res += 1 << bit;
-        }
-        return res;
-    }
-};
-```
-
-### [剑指 Offer 66. 构建乘积数组](https://leetcode-cn.com/problems/gou-jian-cheng-ji-shu-zu-lcof/)
-
-**思路**
-
-**(数组)**   $O(n)$
-
-由题意可知：$B[i]=A[0]×A[1]×…×A[i−1]×A[i+1]×…×A[n−1]$ 。
-
-因此，我们可以通过两边遍历来实现：
-
-- 1、第一遍正向遍历，求出 $B[i]=A[0]×A[1]×…×A[i−1]$。
-- 2、第二遍反向遍历，求出$B[i] *= A[n - 1]×A[n - 2]×…×A[i+1]$。  
-
-最后我们返回`B[]`数组即可。 
-
-**时间复杂度分析：** 我们遍历了两次数组，因此时间复杂度为$O(n)$ 
+**时间复杂度分析：**  $O(n)$。
 
 **c++代码**
 
 ```c++
 class Solution {
 public:
-    vector<int> constructArr(vector<int>& a) {
-        int n = a.size();
-        vector<int> res(n);
-        for(int i = 0, p = 1; i < n; i++){  // 第一次算出 res[i] = a[0] * a[1] * ... * a[i - 1]
-            res[i] = p;
-            p *= a[i];
-        }
-        for(int i = n - 1, p = 1; i >= 0; i-- ){
-            res[i] *= p;                   // 第二次算出 res[i] *= a[n - 1] * a[n - 2]*...* a[i + 1]
-            p *= a[i];
+    int maxSubArray(vector<int>& nums) {
+        int n = nums.size(), res = nums[0];
+        vector<int> f(n + 1, 0);
+        f[0] = nums[0];
+        for(int i = 1; i < n; i++){
+            f[i] = max(nums[i], f[i - 1] + nums[i]);
+            res = max(res, f[i]);
         }
         return res;
     }
 };
 ```
 
-### [剑指 Offer 67. 把字符串转换成整数](https://leetcode-cn.com/problems/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu-lcof/)
+### [剑指 Offer 43. 1～n 整数中 1 出现的次数](https://leetcode-cn.com/problems/1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof/)
 
 **思路**
 
-**(模拟)**  $O(n)$
+**(数位统计)** 
 
-**先来看看题目的要求：**
+我们按位来进行计算，分为中间位，前位，和后位，分情况进行计算，循环中间位的值。
 
-- 1、**忽略所有行首空格**，找到第一个非空格字符，可以是 `‘+/−’ `表示是正数或者负数，紧随其后找到**最长的一串连续数字**，将其解析成一个整数。
-- 2、整数后可能有**任意非数字字符**，请将其忽略。
-- 3、如果整数大于`INT_MAX`，请返回`INT_MAX`；如果整数小于`INT_MIN`，请返回`INT_MIN`；
+以`abcdef`为例，中间位为`c`   
 
-**具体过程：**
+1、`c = 1`   则个数 `+= (ab - 1)  * 1000 ` (`def`位数)。
 
-- 1、定义`k = 0`，用`k`来找到第一个非空字符位置。
-- 2、使用`flag`记录数字的正负性，`false`表示正号，`true`表示负号。
-- 3、使用`res`来存贮结果，当`str[k]`为数字字符时进入`while`循环，执行`res = res * 10 +str[k] - '0'`。
-  - 根据`flag`判断，如果`res`大于`INT_MAX`，则返回`INT_MAX`；如果`res * -1`小于`INT_MIN`，则返回`INT_MIN`；
-- 4、计算`res `。
+2、前位取`ab`，`c = 0`，则不加。
 
-**时间复杂度分析：**字符串长度是 `n`，每个字符最多遍历一次，所以总时间复杂度是 $O(n)$。
+- `c = 1`， 则个数 `+= def + 1`
+- `c > 1`， 则个数 `+= 1000` (`def`位数)
 
-**c++代码 **
+**图示过程：** 
+
+<img src="剑指offer.assets/image-20211130094107326.png" alt="image-20211130094107326" style="zoom:50%;" />
+
+**c++代码**
 
 ```c++
 class Solution {
 public:
-    int strToInt(string str) {
-        int k = 0;
-        bool flag = false;
-
-        while (k < str.size() && str[k] == ' ') k++;
-        if (str[k] == '-') flag = true, k++;
-        else if (str[k] == '+' ) k++;
-
+    int countDigitOne(int n) {
+        if(!n) return 0;
+        vector<int> nums;
+        while(n)  nums.push_back(n % 10), n /= 10;
         long long res = 0;
-        while(k < str.size() && str[k] >= '0' && str[k] <= '9'){
-            res = res * 10 + str[k] - '0';
-            if (res > INT_MAX && !flag)     return  INT_MAX;
-            if (res * -1 < INT_MIN && flag) return  INT_MIN;
-            k++;
+        for(int i = nums.size() - 1; i >= 0; i--){
+            int left = 0, right = 0, t = 1;
+            for(int j = nums.size() - 1; j > i; j--) left = left * 10 + nums[j];
+            for(int j = i - 1; j >= 0; j--) right = right * 10 + nums[j], t *= 10;
+            res += left * t;
+            if(nums[i] == 1) res += right + 1;
+            else if(nums[i] > 1) res += t;
         }
-        if(flag) res *= -1;
-        return  res;
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 44. 数字序列中某一位的数字](https://leetcode-cn.com/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/)
+
+**思路**
+
+**(数位统计)**  $O(logn)$ 
+
+首先我们知道，`1` 位数有 `10` 个，`2` 位数有 `90` 个，`3` 位数有 `9 * 100` 个，`4` 位数有 `9 * 1000` 个，以此类推，如下表：
+
+| 数字范围 | 数量 | 位数 | 占多少位 |
+| :------: | :--: | :--: | :------: |
+|   1~9    |  9   |  2   |    9     |
+|  10~99   |  90  |  2   |   180    |
+| 100~999  | 900  |  3   |   2700   |
+
+**1、确定序列的第`n`位应该是一个几位数中的某一位** 
+
+假如我们需要求的是序列的第`1001`位是什么，我们可以发现`1001 > 9`,所以第`1001`位肯定在`1~9`这九位数字之后，接下来我们又发现`(1001 - 9) > 180`,所以第`1001`位也不可能是一个两位数中的某位，而`(1001 - 9 - 180) < 2700`,因此可以断定序列的第`1001`位是一个三位数中的某一位。
+
+**2、确定是几位数的第几个数，然后确定具体数值**
+
+现在已经知道了序列的第`1001`位是一个三位数中的某一位，那到底是哪一个三位数呢，很简单，计算方法为`base + (n + i - 1)/i - 1`。( `[n / i]`上取整 = ` [(n + i - 1) / i] `)
+
+`base`表示这一位的第一个数是多少，`1`位的第一个数是`1`，`2`位的第一个数是`10`，`3`位是`100`，`4`位是`1000`。
+
+`i`是位数。
+
+`n`是序列的第`n`位。
+
+因此，`100 + (( 1001 - 9 - 180 + 3 - 1)/ 3 ) - 1 = 370` 
+
+**3、确定属于那个数的第几位** 
+
+ok，现在也知道了它是属于`370`的某位的，那到底是哪一位，求余就好了
+
+`(1001 - 9 - 180) % 3 = 2`，所以答案是`370`中的第二位，即`7`。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int digitAtIndex(int n) {
+        n--; //先把0去掉，一位数字变成了9个
+     	n++; //从第1位开始计数
+        
+        // i枚举的是位数，从1位开始枚举
+        // s表示这一位一共有多少个数，1位有9个数
+        // base表示这一位的第一个数是多少，1位的第一个数是1，2位的第一个数是10,3位是100,4位是1000
+        long long i = 1,s = 9, base = 1; 
+        while( n > i*s )
+        {
+            n -= i * s;
+            i++;
+            s *= 10;
+            base *= 10;               
+        }
+        //确定i位数的第n位是属于哪个数  [n/i]上取整 = [(n+i-1)/i] 
+        int number = base + (n + i - 1)/i - 1;
+        
+        //确定那个数的第几位
+        int r = n % i ? n % i : i;  // 除不尽就是第几位，除尽了就是最后一位
+        
+        for(int j = 0; j < i - r; j++) number /= 10; //求数的第i - r位，取出第i - r位
+        
+        return number % 10;
     }
 };
 ```
