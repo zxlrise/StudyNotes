@@ -149,7 +149,414 @@ public:
 };
 ```
 
+### [剑指 Offer 48. 最长不含重复字符的子字符串](https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/)、
 
+**思路**
+
+**(双指针扫描)** $O(n)$
+
+定义两个指针 $i,j(i<=j)$，表示当前扫描到的子串是 $[i,j]$ (闭区间)。扫描过程中维护一个哈希表`unordered_map <chat,int>hash`，表示 $[i,j]$中每个字符出现的次数。
+
+线性扫描时，每次循环的流程如下：
+
+- 1.指针 $j$ 向后移一位, 同时将哈希表中 `s[j]` 的计数加一:` hash[s[j]]++`;
+
+- 2.假设 $j$ 移动前的区间 $[i,j]$中没有重复字符，则 $j$ 移动后，只有 `s[j]​`可能出现`2`次。因此我们不断向后移动` i`，直至区间 `[i,j]`中 `s[j]` 的个数等于`1`为止；
+
+**时间复杂度分析：**由于 `i`，`j` 均最多增加`n`次，且哈希表的插入和更新操作的复杂度都是 $O(1)$，因此，总时间复杂度 $O(n)$.
+
+**c++代码** 
+
+```c++
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char, int> hash; //存贮每个字符出现的次数
+        int res = 0;
+        for(int j = 0, i = 0; j < s.size(); j++){   //[j, i]
+            hash[s[j]]++;
+            while(hash[s[j]] > 1) hash[s[i++]]--;
+            res = max(res, j - i + 1);
+        }
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 49. 丑数](https://leetcode-cn.com/problems/chou-shu-lcof/)
+
+**思路**
+
+**(三路归并)**   $O(n)$
+
+我们把只包含质因子 `2`、`3` 和 `5` 的数称作丑数，使用` vector<int> res` 存储每个丑数，且已知第一个丑数是 `1`，即 `res[0] = 1`。
+
+用 `i`,`j`,`k`,三个指针分别指向三个序列：
+
+- `i `指向质因子包含 `2` 的所有数组成的序列 $II$。
+- `j` 指向质因子包含 `3` 的所有数组成的序列 $III$。
+- `k` 指向质因子包含 `5 `的所有数组成的序列 $V$。
+
+初始状态下三个指针都是`0`，指向第一个丑数 `res[0] = 1`。
+
+三路归并，每次取 `res[i]∗2`，`res[j]∗3`，`res[k]∗5`中的最小值，就是下一个丑数。
+其中 `res[i]` 是序列 $II$ 的第 `i `个数，那么 `res[i]∗2` 就是第 `i + 1` 个数，`res[j]` 是序列 $III$ 的第 `j` 个数，那么 `res[j]∗3` 就是第 `j + 1` 个数，`res[k]` 是序列 $V $的第 `k` 个数，那么 `res[k]∗5`就是第 `k + 1`个数。
+
+`res[0] = 1` 不属于任何序列。
+
+如果下一个丑数为 `res[i]∗2`，则 `i `指针向往后移，如果 为`res[j]∗3`，则 `j `指针往后移，如果为` res[k]∗5`，则 `k` 指针往后移。
+
+**细节：**
+
+如果下一个丑数即是 `2` 的倍数也是 `3` 的倍数，那么指针 `i` 和 `j` 都要往后移。
+
+**时间复杂度分析：** 求第 `n` 个丑数，已知第一个丑数是 `1`，循环 `n - 1` 次即可求得，时间复杂度为 $O(n)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int> res;
+        res.push_back(1);
+        int i = 0, k = 0, j = 0;
+        while(--n){
+            int t = min(res[i] * 2, min(res[j] * 3, res[k] * 5));
+            res.push_back(t);
+            if(t % 2 == 0)  i++;
+            if(t % 3 == 0)  j++;
+            if(t % 5 == 0)  k++;
+        }
+        return res.back();
+    }
+};
+
+```
+
+### [剑指 Offer 50. 第一个只出现一次的字符](https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/)
+
+**思路**
+
+**(哈希)**  $O(n)$
+
+1、定义一个`hash`表，存贮字符串`s`中每个字符出现的次数。
+
+2、遍历整个字符串，如果字符串`s`中的某个字符出现的次数为`1`，则我们返回该字符。
+
+3、如果没有，则返回空格。
+
+**时间复杂度分析：**  $O(n)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    char firstUniqChar(string s) {
+        unordered_map<char, int> hash;
+        for(char c : s) hash[c]++;
+        for(char c : s){
+            if(hash[c] == 1) return c;
+        }
+        return ' ';
+    }
+};
+```
+
+### [剑指 Offer 51. 数组中的逆序对](https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/)
+
+**思路**
+
+**(归并排序)**   $O(nlogn)$
+
+**归并排序模板：**
+
+```c++
+const int maxn = 1e5 + 10;
+int q[maxn], tmp[maxn];
+void merge_sort(int q[], int l, int r)
+{
+	if (l >= r)  return;      //如果只有一个数字或没有数字，则无需排序
+	int mid = (l + r ) / 2;
+	merge_sort(q, l, mid);       //分解左序列
+	merge_sort(q, mid + 1, r);   //分解右序列
+	int k = l, i = l, j = mid + 1;
+	while (i <= mid && j <= r)   //合并
+	{
+		if (q[i] <= q[j]) tmp[k++] = q[i++];
+		else tmp[k++] = q[j++];
+	}
+	while (i <= mid) tmp[k++] = q[i++];    //复制左边子序列剩余
+	while (j <= r)   tmp[k++] = q[j++];    //复制右边子序列剩余
+	for (int i = l; i <= r; i++) q[i] = tmp[i];
+}
+```
+
+在归并排序的合并操作中，我们假设左右两个区间元素为：
+
+左边：`{3 4 7 9}` 右边：`{1 5 8 10}`
+
+那么合并操作的第一步就是比较`3`和`1`，然后将`1`取出来放到辅助数组中，这个时候我们发现，右边的区间如果是当前比较的较小值，那么其会与左边剩余的数字产生逆序关系，也就是说`1`和`3`、`4`、`7`、`9`都产生了逆序关系，因此我们可以一下子统计出有`4`对逆序对。接下来`3`，`4`取下来放到辅助数组后，`5`与左边剩下的`7`、`9`产生了逆序关系，我们可以统计出`2`对。依此类推，`8`与`9`产生`1`对,那么总共有`4 + 2 + 1`对。这样统计的效率就会大大提高，便可较好地解决逆序对问题。
+
+而在算法的实现中，我们只需略微修改原有归并排序，当右边序列的元素为较小值时，就统计其产生的逆序对数量，即可完成逆序对的统计。
+
+<img src="剑指offfer2.assets/image-20211201203734120.png" alt="image-20211201203734120" style="zoom:50%;" />
+
+**时间复杂度分析：**  归并排序的时间复杂度为$O(nlogn)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:   
+    int reversePairs(vector<int>& nums) {
+        return merge(nums, 0, nums.size() - 1);
+    }
+
+    int merge(vector<int>&nums, int l, int r){
+        if(l >= r) return 0; //序列中只有一个数
+        int mid = l + r>> 1;
+        int res = merge(nums, l, mid) + merge(nums, mid + 1, r);
+        vector<int> tmp;
+        int i = l, j = mid + 1;
+        while(i <= mid && j <= r){
+            if(nums[i] <= nums[j]) tmp.push_back(nums[i++]);
+            else{
+                res += mid - i + 1;
+                tmp.push_back(nums[j++]);
+            }
+        }
+        while(i <= mid) tmp.push_back(nums[i++]);
+        while(j <= r)   tmp.push_back(nums[j++]);   
+        int k = l;
+        for(int x : tmp) nums[k++] = x;
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 52. 两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)
+
+**(链表，指针扫描)** $O(n)$
+
+这题的思路很巧妙，我们先给出做法，再介绍原理。
+
+**算法步骤：** 
+
+1. 用两个指针分别从两个链表头部开始扫描，每次分别走一步；
+2. 如果指针走到`null`，则从另一个链表头部开始走；
+3. 当两个指针相同时：
+   - 如果指针不是`null`，则指针位置就是相遇点；
+   - 如果指针是` null`，则两个链表不相交；
+
+此题我们画图讲解，一目了然：
+
+1、两个链表不相交：
+
+<img src="剑指offfer2.assets/image-20211201211203286.png" alt="image-20211201211203286" style="zoom:50%;" />
+
+`a`，`b` 分别代表两个链表的长度，则两个指针分别走 `a + b` 步后都变成 `null`。
+
+2 、两个链表相交：
+
+<img src="剑指offfer2.assets/image-20211201211546480.png" alt="image-20211201211546480" style="zoom:50%;" />
+
+则两个指针分别走 `a + b + c` 步后在两链表交汇处相遇。
+
+**时间复杂度分析：**每个指针走的长度不大于两个链表的总长度，所以时间复杂度是$O(n)$。
+
+**c++代码**
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        auto pA = headA, pB = headB;
+        while(pA != pB) {
+            if(pA) pA = pA->next;
+            else pA = headB;
+            if(pB) pB = pB->next;
+            else pB = headA;
+        }
+        return pA;
+    }
+};
+```
+
+### [剑指 Offer 53 - II. 0～n-1中缺失的数字](https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/)
+
+**思路**
+
+**(二分)**  $O(logn)$
+
+假设数组中第一个缺失的数是 `x`，那么数组中的数如下所示:
+
+<img src="剑指offfer2.assets/1_37a28f4683-缺失数字.png" alt="缺失数字.png" style="zoom: 67%;" />
+
+从中可以看出，数组左边蓝色部分都满足`nums[i] == i`，数组右边橙色部分都不满足`nums[i] == i`，因此我们可以二分出分界点 `x `的值。
+
+**具体过程如下：**
+
+1、初始化`l = 0 `， `r = nums.size() - 1`，二分`nums[i] !=i`的最左边界。
+
+2、当`nums[mid] != mid` , 说明答案在左半部分，往左边区域找，则`r = mid`。
+
+3、当`nums[mid] == mid` , 说明答案在右半部分，往右边区域找，则`l = mid + 1`。
+
+<img src="剑指offfer2.assets/image-20211201212707378.png" alt="image-20211201212707378" style="zoom:50%;" />
+
+
+
+4、当只剩下一个数时，就是缺失数字，我们返回`r`。
+
+**实现细节：**
+
+当所有数都满足`nums[i] == i`时，表示缺失的是 `n`。
+
+**时间复杂度分析：** 二分的时间复杂度是 $O(logn)$。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int l = 0, r = nums.size() - 1;
+        while(l < r){
+            int mid = (l + r) / 2;
+            if(nums[mid] != mid) r = mid;
+            else l = mid + 1;
+        }
+        if(nums[r] == r)  r++;  //缺失的是n 
+        return r;
+    }
+};
+```
+
+### [剑指 Offer 54. 二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
+
+**思路**
+
+**(dfs)**  $O(n)$ 
+
+**什么是二叉搜索树 ？**
+
+二叉搜索树是一棵有序的二叉树，所以我们也可以称它为二叉排序树。具有以下性质的二叉树我们称之为二叉搜索树：若它的左子树不为空，那么左子树上的所有值均小于它的根节点；若它的右子树不为空，那么右子树上所有值均大于它的根节点。它的左子树和右子树分别也为二叉搜索树。
+
+**二叉搜索树的中序遍历是：左=>根=>右； 二叉搜索树的中序遍历从小到大是有序的。** 
+
+**中序遍历模板** 
+
+```c++
+//打印中序遍历
+void dfs(TreeNode* root ) 
+{
+    if(!root) return;
+    dfs(root->left); 	//左
+    print(root->val);   //根
+   	dfs(root->right);	//右
+}
+```
+
+**如图所示** 
+
+<img src="剑指offfer2.assets/image-20210714155248852.png" alt="image-20210714155248852" style="zoom: 50%;" />
+
+因此求二叉搜索树第 `k`大的节点” 可转化为求 “二叉搜索树的中序遍历倒序的第`k` 个节点”。
+
+**过程如下：**
+
+- 1、按照**右->根->左**的顺序（中序遍历倒序）遍历二叉树
+
+- 2、我们每次遍历一个节点的时候就让`k--`，当`k`减为`0`时，我们就找到了第`k`大的节点。
+
+具体实现细节看代码。
+
+**时间复杂度分析：** 每个节点最多只会被遍历`1`次，因此`n`个节点，时间复杂度为$O(n)$ 。
+
+**c++代码**
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public: 
+    int res;
+    int kthLargest(TreeNode* root, int k) {
+        dfs(root,k);
+        return res;
+    }
+    void dfs(TreeNode* root ,int &k) //传引用 这里需要保证所有dfs函数共用一个k 
+    {
+        if(!root) return;
+        dfs(root->right,k);
+        k--;
+        if(!k) res = root->val;
+        dfs(root->left,k);
+    }
+};
+```
+
+### [剑指 Offer 55 - I. 二叉树的深度](https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/)
+
+**思路**
+
+**(递归)**     $O(n)$
+
+一棵二叉树的最大深度 `==` max(左子树最大深度,  右子树最大深度) + `1`。
+
+<img src="剑指offfer2.assets/image-20211201222737598.png" alt="image-20211201222737598" style="zoom:50%;" />
+
+**时间复杂度分析：**  $O(n)$
+
+**c++代码**
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    //一棵二叉树的最大深度 == max(左子树最大深度, 右子树最大深度) + 1
+    int maxDepth(TreeNode* root) {
+        if(!root) return 0;
+        int lh = maxDepth(root->left), rh = maxDepth(root->right);
+        return max(lh, rh) + 1;
+    }
+};
+```
+
+### [剑指 Offer 55 - II. 平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)
+
+**思路**
+
+**c++代码**
+
+```c++
+
+```
 
 ### [剑指 Offer 56 - II. 数组中数、字出现的次数 II](https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/)
 
