@@ -1390,9 +1390,40 @@ public:
 
 **(递归)**   $O(n)$ 
 
+`p`和`q`这两个节点共有三种情况：
+1、`p` 和 `q`在`root`的子树中，且位于两侧。
+2、`p = root` 且 `q` 在 `root` 的左或右子树中。
+3、`q = root` 且 `p` 在 `root` 的左或右子树中。
+
+考虑在左子树和右子树中查找这两个节点，如果两个节点分别位于左子树和右子树，则最低公共祖先为自己(root)，若左子树中两个节点都找不到，说明最低公共祖先一定在右子树中，反之亦然。考虑到二叉树的递归特性，因此可以通过递归来求得。
+
+**时间复杂度分析：**需要遍历树，复杂度为 $O(n)$。
+
 **c++代码**
 
 ```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root) return NULL;  //没有找到，返回null
+        if(root == p || root == q) return root; //找到其中之一，返回root
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);  //返回左子树查找节点
+        TreeNode* right = lowestCommonAncestor(root->right,p ,q); //返回右子树查找节点
+        if(left && right) return root; 
+        if(left) return left;
+        else return right;
+    }
+};
+
 ```
 
 
