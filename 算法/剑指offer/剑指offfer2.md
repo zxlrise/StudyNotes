@@ -1171,7 +1171,9 @@ public:
 
 **(贪心)**  $O(n)$
 
-**时间复杂度分析：** 
+由于只允许做一次股票买卖交易，因此我们用`minv`记录一只股票的最低价格，之后遍历整个`prices`数组，更新`minv`和`prices[i] - minv`的最大值。
+
+**时间复杂度分析：** $O(n)$
 
 **c++代码**
 
@@ -1191,7 +1193,69 @@ public:
 
 ```
 
+### [剑指 Offer 64. 求1+2+…+n](https://leetcode-cn.com/problems/qiu-12n-lcof/)
 
+**思路**
+
+**(递归)**  $O(n)$
+
+求`1 + 2 + ... + n`，但是不能使用乘除法、`for`、`while`、`if`、`else`、`switch`、`case`等关键字及条件判断语句，因此考虑递归
+
+。
+
+**递归函数定义：** `int sumNums(int n)`表示求`1 + 2 + ... + n`。
+
+**递归等价式：** `sumNums(n) =  n + sumNums(n - 1)`。
+
+**递归边界:**  `n == 1`时，返回`1`。但是题目要求不能使用`if`，`while`等分支判断，可以考虑利用`&&`短路运算来终止判断。
+
+**时间复杂度分析：** $O(n)$
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int sumNums(int n) {
+        int res = n;
+        n >= 1 && (res += sumNums(n - 1));
+        return res;
+    }
+};
+```
+
+### [剑指 Offer 65. 不用加减乘除做加法](https://leetcode-cn.com/problems/bu-yong-jia-jian-cheng-chu-zuo-jia-fa-lcof/)
+
+**思路**
+
+**(异或)**   $O(1)$
+
+通过与运算与异或运算来实现加法运算：
+
+- 1、计算两个数不算进位的结果 `(a ^ b)`
+- 2、计算两个数进位的结果 `(a & b) << 1`
+- 3、将两个结果相加，我们发现又要用到加法运算，那么其实我们重复上述步骤就行了，直到一个数变为`0`( 不再进位 )则运算全部完成。
+
+<img src="剑指offfer2.assets/image-20211204093334112.png" alt="image-20211204093334112" style="zoom: 50%;" />
+
+**时间复杂度分析：** $O(1)$
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int add(int a, int b) {
+        while(b){
+            int x = a ^ b; //计算进位
+            int y = (unsigned int)(a & b) << 1 ;  //计算进位，并防止溢出
+            a = x;
+            b = y;
+        }
+        return a;
+    }
+};
+```
 
 ### [剑指 Offer 66. 构建乘积数组](https://leetcode-cn.com/problems/gou-jian-cheng-ji-shu-zu-lcof/)
 
@@ -1278,4 +1342,58 @@ public:
     }
 };
 ```
+
+### [剑指 Offer 68 - I. 二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/)
+
+**思路**
+
+**(递归)**   $O(n)$ 
+
+二叉搜索树的定义：左子树`p->val`小于根节点`root->val`，根节点值小于右子树`q->val`。
+
+因此可以利用二叉搜索树的特点，如果`p`、`q`的值都小于`root`，说明`p`，` q` 肯定在`root`的左子树中；如果`p`，`q`都大于`root`，说明肯定在`root`的右子树中，如果一个在左一个在右，则说明此时的`root`记为对应的最近公共祖先。
+
+**递归过程中只有`3`种情况：** 
+
+- `p->val <= root->val &&  q->val >=root->val`（结束，返回`root`值即结果）
+- `p->val > root->val && q->val > root->val`（`root->right`递归）
+- `p->val > root->val && q->val > root->val`（`root->left`递归）
+
+**时间复杂度分析：** 每个节点最多只会被遍历一次，因此时间复杂度为$O(n)$。
+
+**c++代码**
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root) return NULL;
+        if(p->val < root->val && q->val < root->val)  return lowestCommonAncestor(root->left, p, q);     
+        if(p->val > root->val && q->val > root->val)  return lowestCommonAncestor(root->right, p, q); 
+        return root; 
+    }
+};
+```
+
+### [剑指 Offer 68 - II. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/)
+
+**思路**
+
+**(递归)**   $O(n)$ 
+
+**c++代码**
+
+```c++
+```
+
+
 
