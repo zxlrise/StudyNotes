@@ -51,9 +51,9 @@ public:
 1. 同时从头开始枚举两个链表，将`l1`和`l2`指针指向的元素相加存到`t`中，再将`t % 10 `的元素存到`dummy`链表中，再`t / 10`去掉存进去的元素，`l1`和`l2`同时往后移动一格。
 2. 当遍历完所有元素时，如果`t != 0`，再把`t`存入到`dummy`链表中。
 
-<img src="../LeetCode 热题 HOT 100.assets/image-20211205135046436.png" alt="image-20211205135046436" style="zoom:50%;" />
+<img src="LeetCode 热题 HOT 100.assets/image-20211205135046436.png" alt="image-20211205135046436" style="zoom:50%;" />
 
-做有关链表的题目，有个常用技巧：添加一个虚拟头结点：`ListNode *head = new ListNode(-1)`;，可以简化边界情况的判断。
+做有关链表的题目， 有个常用技巧：添加一个虚拟头结点：`ListNode *head = new ListNode(-1)`;，可以简化边界情况的判断。
 
 **时间复杂度：**由于总共扫描一遍，所以时间复杂度是 $O(n)$。
 
@@ -139,7 +139,7 @@ public:
 
 1、考虑一般情况，我们在 `nums1`和`nums2`数组中各取前`k/2`个元素  
 
-<img src="../LeetCode 热题 HOT 100.assets/image-20210722154205811.png" alt="image-20210722154205811" style="zoom:50%;" />
+<img src="LeetCode 热题 HOT 100.assets/image-20210722154205811.png" alt="image-20210722154205811" style="zoom:50%;" />
 
 我们默认`nums1`数组比`nums2`数组的有效长度小 。`nums1`数组的有效长度从`i`开始，`nums2`数组的有效长度从`j`开始，其中`[i,si - 1]`是`nums1`数组的前`k / 2`个元素，`[j, sj - 1]`是`nums2`数组的前` k / 2`个元素。
 
@@ -176,7 +176,7 @@ public:
             return (left + right) / 2.0;
         }else{
             return find(nums1, 0, nums2, 0, tot / 2 + 1);
-        }
+        }	
     }
 
     int find(vector<int>& nums1,int i, vector<int>& nums2, int j, int k){
@@ -217,7 +217,7 @@ public:
 
 ---------------
 
-<img src="LeetCode 热题 HOT 100.assets/7416_d13e30f0aa-17362169-1494d2d44bb18bfe.png" alt="17362169-1494d2d44bb18bfe.png" style="zoom: 67%;" />
+<img src="LeetCode 热题 HOT 100.assets/7416_d13e30f0aa-17362169-1494d2d44bb18bfe-16426452957071.png" alt="17362169-1494d2d44bb18bfe.png" style="zoom: 67%;" />
 
 <img src="LeetCode 热题 HOT 100.assets/7416_d610d808aa-17362169-f12d881c769cc544.png" alt="17362169-f12d881c769cc544.png" style="zoom: 67%;" />
 
@@ -266,7 +266,7 @@ public:
 
 **图示:**
 
-<img src="../LeetCode 热题 HOT 100.assets/image-20210529111940128.png" alt="image-20210529111940128" style="zoom:50%;" />
+<img src="LeetCode 热题 HOT 100.assets/image-20210529111940128.png" alt="image-20210529111940128" style="zoom:50%;" />
 
 **时间复杂度分析：**枚举数组中的每个位置`i`需要$O(n)$的时间复杂度，求回文子串需要$O(n)$的时间复杂度，因此总的时间复杂度为$O(n^2)$。
 
@@ -544,7 +544,7 @@ public:
 3.    将剩余的 `l1` 或 `l2` 接到 `cur` 指针后边。
 4.    最后返回`dummy->next`。
 
-**时间复杂度分析：** 
+**时间复杂度分析：**  $O(n)$ 
 
 **c++代码**
 
