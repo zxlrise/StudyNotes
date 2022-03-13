@@ -32,6 +32,7 @@
 ### Java进阶篇
 
 - [Java-底层建筑-JVM](https://github.com/zxlrise/StudyNotes/blob/main/JVM/JVM%E5%AD%A6%E4%B9%A0.md) 
+- [Java- 集合框架-JavaWeb]() 
 
 ### 数据结构与算法篇
 
@@ -63,7 +64,17 @@
 - [SpringBoot集成Swagger](https://github.com/zxlrise/StudyNotes/blob/main/%E6%A1%86%E6%9E%B6/SpringBoot/%E9%9B%86%E6%88%90Swagger.md)
 - [SpringBoot小项目 - 员工管理系统](https://github.com/zxlrise/StudyNotes/blob/main/%E6%A1%86%E6%9E%B6/SpringBoot/%E5%91%98%E5%B7%A5%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F.md) 
 
-### 计算机网络
+### 运维篇
+
+- [Linux学习笔记](https://github.com/zxlrise/StudyNotes/blob/main/Linux/Linux.md)
+
+### 前端框架学习篇
+
+- [Vue实战笔记（一）](https://github.com/zxlrise/StudyNotes/blob/main/%E5%89%8D%E7%AB%AF/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.md)
+- [Vue实战笔记（二）](https://github.com/zxlrise/StudyNotes/blob/main/%E5%89%8D%E7%AB%AF/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.md)
+- [Vue实战笔记（三）](https://github.com/zxlrise/StudyNotes/blob/main/%E5%89%8D%E7%AB%AF/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.md) 
+
+### 计算机网络 
 
 #### 基础篇
 
@@ -85,14 +96,42 @@
 - [TCP和UDP的区别](https://github.com/zxlrise/StudyNotes/blob/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95%E7%AF%87/TCP%E5%92%8CUDP%E7%9A%84%E5%8C%BA%E5%88%AB.md)
 - [面试官问我：从地址栏输入URL到显示页面都发生了什么？](https://github.com/zxlrise/StudyNotes/blob/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95%E7%AF%87/%E5%9C%B0%E5%9D%80%E6%A0%8F%E8%BE%93%E5%85%A5URL%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F.md)
 - [计算机网络面试突击](https://github.com/zxlrise/StudyNotes/blob/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95%E7%AF%87/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E7%AA%81%E5%87%BB.md) 
-- 
+- [多张图带你彻底搞懂DNS域名解析过程](https://github.com/zxlrise/StudyNotes/blob/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95%E7%AF%87/DNS%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%8E%9F%E7%90%86.md)
 
 ### MySQL篇
+
+#### 基础篇
+
+- [MySQL基础笔记](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/MySQL%E5%9F%BA%E7%A1%80/MySQL.md) 
+
+#### 进阶篇
+
+#### 面试篇
+
+- [MySQL面试题](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/MySQL%E9%9D%A2%E8%AF%95/MySQL%E9%9D%A2%E8%AF%95%E9%A2%98.md) 
 
 ### Redis篇
 
 #### 基础篇
 
+- [Redis基础笔记](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E5%9F%BA%E7%A1%80/Redis.md)
+
 #### 进阶篇
 
+- [七天玩转Redis | Day1、Redis认识与安装](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E8%BF%9B%E9%98%B6/%E4%B8%83%E5%A4%A9%E7%8E%A9%E8%BD%ACRedis%20%20Day1%E3%80%81Redis%E8%AE%A4%E8%AF%86%E4%B8%8E%E5%AE%89%E8%A3%85.md)
+- [七天玩转Redis | Day2、Redis基本数据类型](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E8%BF%9B%E9%98%B6/%E4%B8%83%E5%A4%A9%E7%8E%A9%E8%BD%ACRedis%20%20Day2%E3%80%81Redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.md)
+- [七天玩转Redis | Day3、Redis位图和GEO介绍与使用](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E8%BF%9B%E9%98%B6/%E4%B8%83%E5%A4%A9%E7%8E%A9%E8%BD%ACRedis%20%20Day3%E3%80%81Redis%E4%BD%8D%E5%9B%BE%E5%92%8CGEO%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8.md)
+- [七天玩转Redis | Day4、Redis持久化机制](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E8%BF%9B%E9%98%B6/%E4%B8%83%E5%A4%A9%E7%8E%A9%E8%BD%ACRedis%20%20Day4%E3%80%81Redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)
+- [七天玩转Redis | Day5、Java操作Redis](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E8%BF%9B%E9%98%B6/%E4%B8%83%E5%A4%A9%E7%8E%A9%E8%BD%ACRedis%20%20Day5%E3%80%81Java%E6%93%8D%E4%BD%9CRedis.md)
+- [七天玩转Redis | Day6、SpringBoot集成Redis](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E8%BF%9B%E9%98%B6/%E4%B8%83%E5%A4%A9%E7%8E%A9%E8%BD%ACRedis%20%20Day6%E3%80%81SpringBoot%E9%9B%86%E6%88%90Redis.md)
+- [七天玩转Redis | Day7、Redis常见面试题](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E8%BF%9B%E9%98%B6/%E4%B8%83%E5%A4%A9%E7%8E%A9%E8%BD%ACRedis%20%20Day7%E3%80%81Redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+
 #### 面试篇
+
+- [Redis面试题](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/Redis%E9%9D%A2%E8%AF%95/Redis%E9%9D%A2%E8%AF%95%E9%A2%98.md) 
+
+### 操作系统
+
+#### 面试篇
+
+- 
