@@ -4,7 +4,7 @@
 
 **思路** 
 
-(数组遍历) $O(n)$
+**(原地交换)**  $O(n)$
 首先遍历一遍数组，如果存在某个数不在0到n-1的范围内，则返回-1。
 
 下面的算法的主要思想是把每个数放到对应的位置上，即让` nums[i] = i`。
@@ -54,6 +54,24 @@ public:
 - 3、如果`matrix[i][j] < target`，`i++`，排除一行。
 - 4、如果`matrix[i][j] > target`，`j--`，排除一列。
 - 5、如果出界还未找到`target`，则返回`false`。
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    bool findNumberIn2DArray(vector<vector<int>>& matrix, int target) {
+        if(!matrix.size() || !matrix[0].size()) return false;
+        int i = 0, j = matrix[0].size() - 1;  //右上角
+        while(i < matrix.size() && j >= 0){
+            if(matrix[i][j] < target) i++;
+            else if(matrix[i][j] > target) j--;
+            else if(matrix[i][j] == target) return  true;
+        }
+        return false;
+    }
+};
+```
 
 **时间复杂度分析：** 每一步会排除一行或者一列，矩阵一共有 $n$ 行，$m$ 列，所以最多会进行$ n+m $步。所以时间复杂度是 $O(n+m)$。
 
@@ -199,6 +217,8 @@ public:
 
 **思路**
 
+**(栈)**  $O(n)$ 
+
 **栈：** 先进后出
 
 **队列：** 先进先出
@@ -289,7 +309,7 @@ public:
 
 **(递推)** $O(n)$
 
-**分析题目可以发现：**
+**分析题目可以发现：** 
 
 - 上 1 阶台阶：有`1`种方式。
 
@@ -328,7 +348,7 @@ public:
 
 **思路**
 
-
+**(二分)**   $O(logn)$ 
 
 为了便于分析，我们先将数组中的数画在二维坐标系中，横坐标表示数组下标，纵坐标表示数组数值，如下所示： 
 
@@ -469,7 +489,7 @@ public:
 
 - 之前没有遍历过，这个可以用个`bool`数组来判断；
 - 没有走出边界；
-- 横纵坐标的各位数字之和小于 等于$k$；
+- 横纵坐标的各位数字之和小于等于$k$；
 
 最后答案就是所有遍历过的合法的节点个数。
 
@@ -526,7 +546,7 @@ public:
 
 **思路**
 
-**(数学)** $O(n)$
+**(数学)**  $O(n)$ 
 这道题目是数学中一个很经典的问题，下面我们给出证明：
 
 首先把一个正整数 $N$ 拆分成若干正整数只有有限种拆法，所以存在最大乘积。
@@ -586,17 +606,17 @@ public:
 
 ### [剑指 Offer 15. 二进制中1的个数](https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)
 
-**思路**
+**思路** 
 **(位运算)** 
 
 $ lowbit(x) $**函数的作用**
 
-$lowbit(x)$**操作返回 $x$ 的最后一位 $1$**
+$lowbit(x)$**操作返回 $x$ 的最后一位 $1$** 
 
 -  $x=1010_2$，那么 $lowbit(x)$ 返回 $10_2$，即$ lowbit(x)=10$
 -  $x=101000_2$，那么 $lowbit(x) $返回$ 1000_2$，即$ lowbit(x)=1000$
 
-**$lowbit$ 的应用：可以统计 $x$ 中 $1$ 的个数**
+**$lowbit$ 的应用：可以统计 $x$ 中 $1$ 的个数** 
 
 就是每一次把 $x$ 的最后一位 $1$ 减掉，即 $x−lowbit(x)$，只需要算下减多少次，减多少次就有多少个$ 1$ 。
 
@@ -699,11 +719,11 @@ public:
 
 **思路**
 
-**(链表， 遍历)**  $O(n)$
+**(链表， 遍历)**  $O(n)$ 
 
-为了方便处理边界情况，我们定义一个虚拟元素`dummy`指向链表头节点，即`dummy->next = head`，同时定义一个`pre`节点，记录当前遍历到的节点的前驱节点。
+为了方便处理边界情况，我们定义一个虚拟元素`dummy`指向链表头节点，即`dummy->next = head`，同时定义一个`pre`指针，记录当前遍历到的节点的前驱节点。
 
-**具体过程如下：**
+**具体过程如下：** 
 
 1、初始化虚拟头节点`dummy->next = head`，前驱节点`pre = dummy`。
 
@@ -755,7 +775,7 @@ public:
 
 根据`p[j]` 是什么来划分集合：
 
-- 1、`p[j] != '*' ` ，即`p[j]`是字符, 看`p[j]` 和`s[i]`的关系。如果`p[j] == s[i]`，则需判断 `s`的前`i - 1`个字母 能否和`p`的前`j -1`个字母匹配 ，即`f[i][j] == f[i - 1][j - 1]`，不匹配 , 无法转移。
+- 1、`p[j] != '*' ` ，即`p[j5]`是字符, 看`p[j]` 和`s[i]`的关系。如果`p[j] == s[i]`，则需判断 `s`的前`i - 1`个字母 能否和`p`的前`j -1`个字母匹配 ，即`f[i][j] == f[i - 1][j - 1]`，不匹配 , 无法转移。
 - 2    `P[j]` 是匹配符:
   - 如果`p[j] == '.' `，则`p[j]` 和 `s[j]`匹配 ，则需判断 `s`的前`i - 1`个字母能否和`p`的前`j -1`个字母匹配 ，即`f[i][j] == f[i - 1][j - 1]`。
   - `p[j]` 为`'*'`，得看`p[j - 1]`和`s[i]`的关系。如果不匹配，即`p[j - 1] ！= s[i]`，那么`'*'`匹配`0`个`p[j - 1]`,则需判断 `s`的前`i`个字母 能否和`p`的前`j - 2`个字母匹配 ，即`f[i][j] == f[i][j - 2]`。如果匹配，即`p[j - 1] == s[i] || p[j - 1] == '.'`，若`'*'`匹配多个`p[j - 1]`,则需判断`s`的前`i - 1`个字母 能否和`p`的前`j`个字母匹配 ，即`f[i][j] == f[i - 1][j]) `。
@@ -824,7 +844,7 @@ public:
 - `s[i]`为数字，则不做任何处理。
 - `s[i] == '.'`，`.`的个数加`1`。如果此时`'.'`在`'e'`后面出现或者` '.'`的个数多于`1`个，则返回`false`。【`1e2.1`，`1e2.1.1`】
 - `s[i] == 'e' || s[i] == 'E'`，`e`的个数加`1`。
-  - 如果此时`'e'`的后面为空或者`'e'`多于`1`个或者`'e'`的前面为空或者为`'.''e'`，则返回`false`。【`12e`，`12e3e`，`e12`，`12.e3`】
+  - 如果此时`'e'`的后面为空或者`'e'`多于`1`个或者`'e'`的前面为空或者为`'.e'`，则返回`false`。【`12e`，`12e3e`，`e12`，`12.e3`，`.e`】
   - `'e'`后面紧跟着正负号，但正负号后面为空，则返回`false`。【`1e2+`】
 - `s[i]`为其他字符，返回`false`。
 
@@ -858,12 +878,12 @@ public:
             else if (s[i] == 'e' || s[i] == 'E')
             {
                 e ++ ; //'e'的个数加1  
-                //'e'的后面为空或者'e'多于1个或者'e'的前面为空或者为'.''e'
+                //'e'的后面为空或者'e'多于1个或者'e'的前面为空或者为  
                 if (i + 1 == s.size() || !i || e > 1 || i == 1 && s[0] == '.') return false;
                 if (s[i + 1] == '+' || s[i + 1] == '-')//'e'后面紧跟着正负号，但正负号后面为空
                 {
                     if (i + 2 == s.size()) return false;
-                    i ++ ;
+                    i ++ ;  //跳过正负号
                 }
             }
             else return false; //其他字符
@@ -972,7 +992,7 @@ public:
 
 - 4、最后我们返回`pre`节点。  
 
-<img src="剑指offer.assets/image-20211125165337516.png" alt="image-20211125165337516" style="zoom:50%;" />
+<img src="剑指offer.assets/1637986700-LQyAGc-image-20211126223100218.png" alt="image-20211126223100218.png" style="zoom:50%;" />
 
 **时间复杂度分析：**只遍历一次链表，时间复杂度是$O(n)$。 
 
@@ -1057,7 +1077,7 @@ public:
 
 **(二叉树，递归)**   $O(nm)$
 
-我们首先判断两棵二叉树是否为空，如果为空，则直接返回`false`。遍历树`A`中的所有非空节点`root`，判断树`A`中以`root`为根节点的子树是不是包含和树`B`一样的结构，且我们从根节点开始匹配，当从`A`的根节点开始不匹配的话，我们递归到`A`的左右子树去匹配。
+我们首先判断两棵二叉树是否为空，如果一个为空，则直接返回`false`。遍历树`A`中的所有非空节点`root`，判断树`A`中以`root`为根节点的子树是不是包含和树`B`一样的结构，且我们从根节点开始匹配，当从`A`的根节点开始不匹配的话，我们递归到`A`的左右子树去匹配。
 
 `isSame`函数用来判断判断`B`是否为`A`的子树，具体设计思路如下：
 
@@ -1279,7 +1299,7 @@ public:
 
 **思路**
 
-**(栈，模拟)** 
+**(栈，模拟)**    $O(n)$
 
 1、我们定义一个空栈`st`，然后模拟这个过程。
 
@@ -1638,7 +1658,7 @@ void dfs(TreeNode* root )
 
 <img src="剑指offer.assets/image-20210715112414259.png" alt="image-20210715112414259" style="zoom:50%;" />
 
-3、首先遍历二叉树的左子树，然后是当前根节点`root`。
+3、首先遍历二叉树的左子树，然后是当前根节点`root`:
 
 - 当前驱节点`pre`不为空时，将前驱节点`pre`的右指针指向当前根节点`root`，即`pre->right = root`。
 
@@ -1696,9 +1716,12 @@ public:
 
 **思路**
 
-**(前序遍历)** 
+**(前序遍历序列化)**   $O(n)$
 
-- 按照前序遍历顺序来序列化二叉树。
+1. 序列化：对整个二叉树进行先序遍历的序列存起来，同时需要把每个结点的空节点使用`"#"`进行标记，例如样例的顺序是`1,2,#,#,3,4,#,#,5,#,#,`
+2. 反序列化：对整个字符串按照`","`进行分割，把所有的元素按序存到链表中（链表元素的顺序是先序序列），按先序遍历的方式拿链表的元素，每次拿第一个元素作为根结点，并删除链表中的第一个元素，然后递归到左儿子做同样的操作，递归到右儿子做同样的操作。注意：若第一个元素是`"#"`,表示该节点是`null`，直接返回`null`
+
+**时间复杂度分析： **每个节点仅遍历两次，故时间复杂度为 $O(n)$。
 
 **c++代码**
 
@@ -1712,67 +1735,49 @@ public:
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-class Solution {
+class Codec {
 public:
 
+    string path;
     // Encodes a tree to a single string.
-    string serialize(TreeNode* root) 
-    {
-        string res;
-        dfs_s(root, res);
-        return res;
+    string serialize(TreeNode* root) {
+        dfs_s(root);
+        return path;
     }
 
-    void dfs_s(TreeNode* root, string &res)
-    {
-        if(!root) 
-        {
-            res += "null ";//如果当前节点为空，保存null和一个空格
-            return ;
-        }    
-        res += to_string(root->val) + ' ';//如果当前节点不为空，保存数字和一个空格
-        dfs_s(root->left, res);
-        dfs_s(root->right, res);
+    void dfs_s(TreeNode* root){
+        if(!root) path += "#,";
+        else{
+            path += to_string(root->val) + ',';
+            dfs_s(root->left);
+            dfs_s(root->right);
+        }
     }
+
     // Decodes your encoded data to tree.
-    TreeNode* deserialize(string data) 
-    {
-        int u = 0;  //用来保存当前的字符串遍历的位置
-    return dfs_d(data, u);
+    TreeNode* deserialize(string data) {
+        int idx = 0;
+        return dfs_d(data, idx);
     }
 
-    TreeNode* dfs_d(string data, int &u)
-    {    //这里的u是传的引用，不是值传递
-        if (u == data.size()) return NULL;  //如果已经达到了字符串的尾端，则退出。
-        int k = u;
-        while(data[k] != ' ') k++; //k记录当前数字的位数如134是个三位数的数字，56是个两位数的数字，退出的时候，k指向了字符的中间的空格，所以回到下个字符的首部需要加1.
-
-         if(data[u] == 'n') 
-         {  //如果当前字符串是“null”
-            u = k+1;//回到下一个数字的首部，注意是u = k+1, 不是u = u+1;
-            return NULL;//表示这次构造的是一个null节点，并没有孩子节点，所以跳过后面的递归
-         }
-        int val = 0;
-        //如果数字是负的
-        if(data[u] == '-')
-        {
-            for (int i = u+1; i < k; i++) val = val * 10 + data[i] - '0';
-            val  = -val;
+    TreeNode* dfs_d(string &data, int& idx){
+        if(data[idx] == '#') {
+            idx += 2;
+            return NULL;
+        }else{
+            int k = idx;
+            while(data[idx] != ',') idx++;
+            TreeNode* root = new TreeNode(stoi(data.substr(k, idx - k)));       idx++;
+            root->left = dfs_d(data, idx);
+            root->right = dfs_d(data, idx);
+            return root;
         }
-        else
-        {
-            //如果是数字是正的
-            for (int i = u; i < k; i++) val = val * 10 + data[i] - '0';
-        }
-        u = k + 1;//回到下个数字的首部
-        //递归算法总是先写退出条件，然后才递归调用。
-        auto root = new TreeNode(val);
-        root->left = dfs_d(data, u);
-        root->right = dfs_d(data, u);
-        return root;
     }
-
 };
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));
 ```
 
 ### [剑指 Offer 38. 字符串的排列](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/)
@@ -1806,7 +1811,7 @@ void dfs(int u)
     {
         if(!st[i])
         {
-            path[i] = i;
+            path[u] = nums[i];
             st[i] = true;
             dfs(u + 1);
             st[i] = false;									;
