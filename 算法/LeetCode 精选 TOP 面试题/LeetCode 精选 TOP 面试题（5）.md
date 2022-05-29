@@ -8,7 +8,7 @@
 
 快选是在快排的基础上只递归一半区间。
 
-<img src="https://gitee.com/zhao-xiaolong1/cloudeimage/raw/master/img/image-20210517220121642.png" alt="image-20210517220121642" style="zoom:50%;" />
+<img src="https://gitee.com/zhao-xiaolong1/cloudeimage/raw/master/img/image-20210517220121642.png" alt="image-20210517220121642" style="zoom: 33%;" />
 
 如果当前要找的数$>=x$递归左区间，否则递归右区间
 
@@ -552,7 +552,7 @@ public:
 - 4、如果`matrix[i][j] > target`，`j--`，排除一列。
 - 5、如果出界还未找到`target`，则返回`false`。
 
-**时间复杂度分析：** 每一步会排除一行或者一列，矩阵一共有 $n$ 行，$m$ 列，所以最多会进行$ n+m $步。所以时间复杂度是 $O(n+m)$。
+**时间复杂度分析：** 每一步会排除一行或者一列，矩阵一共有 $n$ 行，$m$ 列，所以最多会进行$n+m$步。所以时间复杂度是 $O(n+m)$。
 
 **c++代码**
 

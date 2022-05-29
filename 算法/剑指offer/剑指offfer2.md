@@ -392,6 +392,39 @@ public:
 };
 ```
 
+### [剑指 Offer 53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
+
+**思路**
+
+**c++代码**
+
+```c++
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if(!nums.size()) return  0;
+        int l = 0, r = nums.size() - 1;
+        while(l < r)       //查找target的开始位置
+        {
+            int mid = (l + r) / 2;
+            if(nums[mid] >= target) r = mid;
+            else l = mid + 1;
+        }
+        if(nums[r] != target) return 0 ;  //查找失败
+        int begin = r;     //记录开始位置
+        l = 0, r = nums.size() - 1;
+        while(l < r)       //查找tatget的结束位置
+        {
+            int mid = (l + r + 1) / 2;
+            if(nums[mid] <= target) l = mid;
+            else r = mid - 1;
+        }
+        int end = r;       //记录结束位置      
+        return end - begin + 1;
+    } 
+};
+```
+
 ### [剑指 Offer 53 - II. 0～n-1中缺失的数字](https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/)
 
 **思路**
@@ -770,7 +803,7 @@ public:
 - 2、枚举整个正数序列，当`sum < target`时，我们可以不断增加`j`使得滑动窗口向右扩展，同时`sum += j`，即`j++, sum += j`。
 
 - 3、当`sum == target`并且滑动窗口的长度大于`1`时，将滑动窗口中的数记录到`res`中。
-- 4、我们记录完一次合法的方案以后，就可以向右收缩滑动窗口，进行下一次合法方案的查找，同时`sum -= i`，即`sum -= i, i++`。
+- 4、我们记录完一次合法的方案以后，就可以向右收缩滑动窗口，进行下一次合法方案的查找，即`sum -= i, i++`。
 
 整个序列只需要枚举到`target/2`，即`target`的一半。 
 
@@ -815,13 +848,13 @@ public:
 
 2、再让`i`和`j`指针指向同一个位置，并让`j`指针跳过若干个非空字符指向单词后的第一个空格。
 
-<img src="剑指offfer2.assets/image-20210628145859830.png" alt="image-20210628145859830" style="zoom: 50%;" />
+<img src="剑指offfer2.assets/image-20210628145859830-16522802414241.png" alt="image-20210628145859830" style="zoom: 50%;" />
 
 
 
 3、将`i`和`j`指针之间的单词翻转。
 
-<img src="剑指offfer2.assets/image-20210628150427348.png" alt="image-20210628150427348" style="zoom: 50%;" />
+<img src="剑指offfer2.assets/image-20210628150427348-16522802660112.png" alt="image-20210628150427348" style="zoom: 50%;" />
 
 4、我们将翻转后的单词重新赋值给字符串`s`的前若干个字符（长度为单词的大小），重复上述过程。
 
@@ -1085,7 +1118,7 @@ public:
 
 **思路**
 
-**(数组，排序)**   $O(n) $
+**(数组，排序)**   $O(n)$
 
 能组成顺子需要满足的两个条件是：
 
@@ -1142,7 +1175,7 @@ public:
 
 下图表示11个人从`1`开始报数，每次报`3`的被杀掉。
 
-![这里写图片描述](剑指offfer2.assets/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwNjA0MDAxNzE0MzQ1)
+![这里写图片描述](剑指offfer2.assets/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwNjA0MDAxNzE0MzQ1-16522805952124)
 
 **时间复杂度分析：**  $O(n)$。
 

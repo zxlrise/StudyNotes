@@ -156,7 +156,7 @@ public:
 请为**LRU缓存**设计一个数据结构。支持两种操作：`get`和`set`。
 
 - `get(key)` :  如果`key`在缓存中，则返回`key`对应的值（保证是正的）；否则返回`-1`；
-- `set(key, value) `:  如果`key`在缓存中，则更新`key`对应的值；否则插入`(key, value)`，如果缓存已满，则先删除上次使用时间最老的`key`。
+- `put(key, value) `:  如果`key`在缓存中，则更新`key`对应的值；否则插入`(key, value)`，如果缓存已满，则先删除上次使用时间最老的`key`。
 
 **思路**
 
@@ -165,7 +165,12 @@ public:
 使用一个双链表和一个哈希表：
 
 - 双链表存储一个节点被使用（get或者put）的时间戳，且按最近使用时间从左到右排好序，最先被使用的节点放在双链表的第一位，因此双链表的最后一位就是最久未被使用的节点；
+
+  ![image-20220127134000873.png](LeetCode 热题 HOT 100 （3）.assets/1643262004-OtWDih-image-20220127134000873.png)
+
 - 哈希表存储`key`对应的链表中的节点地址,用于`key-value` 的增删改查；
+
+  <img src="LeetCode 热题 HOT 100 （3）.assets/1643262241-zktpJQ-image-20220127134342582.png" alt="image-20220127134342582.png" style="zoom:50%;" />
 
 初始化：
 
@@ -188,7 +193,7 @@ public:
 
 1、删除p节点
 
-<img src="LeetCode 热题 HOT 100 （3）.assets/image-20210517204801265-1621258564925.png" alt="image-20210517204801265" style="zoom:50%;" />
+<img src="LeetCode 热题 HOT 100 （3）.assets/1643262655-KckhLz-image-20220127135038940.png" alt="image-20220127135038940.png" style="zoom:50%;" />
 
 ```c++
  p->right->left = p->left;
@@ -197,7 +202,7 @@ public:
 
 2、在L节点之后插入p节点
 
-<img src="LeetCode 热题 HOT 100 （3）.assets/image-20210517210147181.png" alt="image-20210517210147181" style="zoom:50%;" />
+<img src="LeetCode 热题 HOT 100 （3）.assets/1643263209-QYWILJ-image-20220127135858331.png" alt="image-20220127135858331.png" style="zoom:50%;" />
 
 ```c++
 p->right = L->right;
@@ -868,7 +873,7 @@ public:
 
 **具体过程：** 
 
-- 1、在特定区间`[l, r]`中，选中某个数`x`，将大于等于`x`的放在左边，小于`x`的放在右边，其中`[l, j]`是大于等于`x`的区间，`[j + 1,r]`是小于`x`的区间。
+- 1、在特定区间`[l, r]`中，选中某个数`x`，将大于`x`的放在左边，小于`x`的放在右边，其中`[l, j]`是大于`x`的区间，`[j + 1,r]`是小于`x`的区间。
 - 2、判断出第`k`大与`j`的大小关系，若`k <= j`，则递归到`[l, j]`区间，否则递归到`[j + 1,r]`的区间
 
 **注意：**此处求的是第`k`大，而里面的方法`k`是指第`k`个位置，需要变成`k - 1`。 
@@ -1195,7 +1200,7 @@ public:
             ListNode* next = b->next; //保留b的next节点
             b->next = a;
             a = b, b = next;
-        }6
+        }
         //此时a指向链表的尾节点,我们让b指向链表的头节点
         b = head;
         ListNode* tail = a; //保留一下尾节点

@@ -2,7 +2,7 @@
 
 ## 介绍
 
-📚 StudyNotes 是自我学习过程中的学习笔记，包含LeetCode，计算机网络，框架，JVM，并发，源码，数据库等。
+📚 StudyNotes 是自我学习过程中的学习笔记，包含LeetCode，计算机网络，Spring，JVM，并发，源码，MySQL，Redis等。
 
 ## 软件架构
 
@@ -135,3 +135,9 @@
 #### 面试篇
 
 - [操作系统面试题](https://github.com/zxlrise/StudyNotes/blob/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%9D%A2%E8%AF%95%E7%AF%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.md) 
+
+### Spring
+
+### 集合
+
+### 海量数据处理

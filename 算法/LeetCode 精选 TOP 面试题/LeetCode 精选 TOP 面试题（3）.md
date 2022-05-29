@@ -60,7 +60,7 @@ public:
 
 ### [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
 
-**思路**
+**思路**	
 
 **(递归）** $O(n)$
 

@@ -125,7 +125,7 @@ public:
 };
 ```
 
-### [4. 寻找两个正序数组的中位数](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/)
+### [4. 寻找两个正序数组的中位数](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/) *
 
 **思路**
 
@@ -198,7 +198,7 @@ public:
 };
 ```
 
-### [10. 正则表达式匹配](https://leetcode-cn.com/problems/regular-expression-matching/)
+### [10. 正则表达式匹配](https://leetcode-cn.com/problems/regular-expression-matching/) *
 
 **思路**
 
@@ -298,7 +298,7 @@ public:
 
 **过程如下：** 
 
-1、定义两个指针`i`和`j`，分别表示容器的左右边界，初始化`i = 0`， `j = h.size() - 1`，容器大小为`min(i, j)*(j  - i)`。
+1、定义两个指针`i`和`j`，分别表示容器的左右边界，初始化`i = 0`， `j = h.size() - 1`，容器大小为`min(h[i], h[j])*(j  - i)`。
 
 2、若`h[i] < h[j]`，则`i++`，否则`j--`，每次迭代更新最大值。
 

@@ -463,7 +463,7 @@ public:
 
         // 寻找左边第一个小于h[i]的数的下标
         for(int i = 0; i < n; i++){
-            while(!st.empty() && h[st.top()] >= h[i]) st.pop();  //维护单调递减栈
+            while(!st.empty() && h[st.top()] >= h[i]) st.pop();  //维护单调递增栈
             if(st.empty()) left[i] = -1;
             else left[i] = st.top();
             st.push(i);
@@ -472,7 +472,7 @@ public:
         st = stack<int>();
         // 寻找右边第一个小于h[i]的数的下标
         for(int i = n - 1; i >= 0; i--){
-            while(!st.empty() && h[st.top()] >= h[i]) st.pop();  //维护单调递减栈
+            while(!st.empty() && h[st.top()] >= h[i]) st.pop();  //维护单调递增栈
             if(st.empty()) right[i] = n;
             else right[i] = st.top();
             st.push(i);
