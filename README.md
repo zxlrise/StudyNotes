@@ -33,6 +33,7 @@
 
 - [Java-底层建筑-JVM](https://github.com/zxlrise/StudyNotes/blob/main/JVM/JVM%E5%AD%A6%E4%B9%A0.md) 
 - [Java- 集合框架-JavaWeb]() 
+- [Java并发核心知识体系精讲](https://github.com/zxlrise/StudyNotes/blob/main/Java%E5%B9%B6%E5%8F%91/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2.md)
 
 ### 数据结构与算法篇
 
@@ -97,14 +98,18 @@
 - [面试官问我：从地址栏输入URL到显示页面都发生了什么？](https://github.com/zxlrise/StudyNotes/blob/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95%E7%AF%87/%E5%9C%B0%E5%9D%80%E6%A0%8F%E8%BE%93%E5%85%A5URL%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F.md)
 - [计算机网络面试突击](https://github.com/zxlrise/StudyNotes/blob/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95%E7%AF%87/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E7%AA%81%E5%87%BB.md) 
 - [多张图带你彻底搞懂DNS域名解析过程](https://github.com/zxlrise/StudyNotes/blob/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95%E7%AF%87/DNS%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%8E%9F%E7%90%86.md)
+- [计算机网络面试题整理](https://github.com/zxlrise/StudyNotes/blob/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95%E7%AF%87/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C.md)
 
 ### MySQL篇
 
 #### 基础篇
 
 - [MySQL基础笔记](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/MySQL%E5%9F%BA%E7%A1%80/MySQL.md) 
+- [SQL练习](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/MySQL%E5%9F%BA%E7%A1%80/SQL%E7%BB%83%E4%B9%A0.md)
 
 #### 进阶篇
+
+- [从根上理解MySQL](https://github.com/zxlrise/StudyNotes/blob/main/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/MySQL%E8%BF%9B%E9%98%B6/%E4%BB%8E%E6%A0%B9%E4%B8%8A%E7%90%86%E8%A7%A3MySQL.md)
 
 #### 面试篇
 
@@ -138,6 +143,12 @@
 
 ### Spring
 
+- [Spring面试题](https://github.com/zxlrise/StudyNotes/blob/main/Spring/Spring.md)
+
 ### 集合
 
+- [Java集合知识点 + 面试题](https://github.com/zxlrise/StudyNotes/blob/main/Java%E9%9B%86%E5%90%88/%E9%9B%86%E5%90%88.md)
+
 ### 海量数据处理
+
+- [海量数据处理面试题](https://github.com/zxlrise/StudyNotes/blob/main/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.md)
